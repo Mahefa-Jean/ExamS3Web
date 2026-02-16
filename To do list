@@ -13,8 +13,8 @@
                 distribution
 
         Fonction : getAllVille()
-                   getDonOneVille()
-                   getBesoinOneVille() 
+                   getDonOneVille(idville)
+                   getBesoinOneVille(idville) 
 
         Controlleur : DashboardControlleur
         View : dashboard.php
