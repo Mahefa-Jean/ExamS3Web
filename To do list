@@ -1,26 +1,16 @@
-1 - Liste des villes avec leurs besoins :
+1 - Dashboard : 
 
-    backend : base : _ creation de la base : BNGRC (ok)
-                     _ creation des tables : ville (ok)
-                                             besoin (ok)
-                                             don (ok)
-                                             distribution (ok)
-                                             besoinVille (ok)
-                     _ donnees initiales :
-              Model : _ ville
-                      _ besoin
-                      _ don
-                      _ distribution
-                      _ besionVille
+        Base : ville
+               besoin
+               besoinVille
+               don
+               distribution
 
-              Fonction : getAllVille
-                         getBesoinVille(idVille)
-                         getAllDon
+        Model : ville
+                besoin
+                besoinVille
+                don
+                distribution
 
-              Config : config.php (ok)
-
-    lien vers la page besoin : 
-    
-        base : besoinVille   
-        page : besoinVille.php
-        Fonction : getBesoinVille(idVille) 
+        Controlleur : DashboardControlleur
+        View : dashboard.php
