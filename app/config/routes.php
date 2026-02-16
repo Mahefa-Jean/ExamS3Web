@@ -14,8 +14,9 @@ use flight\net\Router;
 $router->group('', function(Router $router) use ($app) {
 
 	$loginControlleur = new loginControlleur($app);
+	$DashboardControlleur = new DashboardControlleur($app);
 
-	$router->get('/',[$loginControlleur,'home']);
+	$router->get('/',[$DashboardControlleur,'home']);
 
 	// $router->get('/benefice',[$controller,'benefice']);
 	// $router->get('/livraison',[$controller,'livraison']);
