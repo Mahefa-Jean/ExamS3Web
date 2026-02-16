@@ -7,14 +7,14 @@
                                              distribution (ok)
                                              besionVille (ok)
                      _ donnees initiales :
-              Model : _ ville
-                      _ besoin
-                      _ don
-                      _ distribution
-                      _ besionVille
-
-              Fonction : getAllVille
-                         getBesoinVille(idVille)
-                         getAllDon
+              Model : _ ville (ok)
+                      _ besoin (ok)
+                      _ don (ok)
+                      _ distribution (ok)
+                      _ besionVille (ok)
+ 
+              Fonction : getAllVille (ok)
+                         getBesoinVille(idVille) (ok)
+                         getAllDon (ok)
 
               Config : config.php (ok)
