@@ -255,14 +255,6 @@
                 <h3>Total sinistrés</h3>
                 <div class="value"><?= array_sum(array_column($villes, 'nombre_sinistre')) ?></div>
             </div>
-            <div class="stat-card">
-                <h3>Total besoins</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_besoins')) ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Total dons reçus</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_dons')) ?></div>
-            </div>
         </div>
 
         <!-- Tableau des villes -->
@@ -272,8 +264,6 @@
                 <tr>
                     <th>Nom de la ville</th>
                     <th>Nombre de sinistrés</th>
-                    <th>Besoins enregistrés</th>
-                    <th>Dons reçus</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -283,8 +273,6 @@
                         <tr>
                             <td><?= htmlspecialchars($ville['nom']) ?></td>
                             <td><?= $ville['nombre_sinistre'] ?></td>
-                            <td><strong><?= $ville['nombre_besoins'] ?></strong></td>
-                            <td><strong><?= $ville['nombre_dons'] ?></strong></td>
                             <td class="action-buttons">
                                 <a href="/besoins/ville/<?= $ville['id'] ?>" class="btn btn-primary">Voir les besoins</a>
                             </td>
@@ -292,7 +280,7 @@
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
+                        <td colspan="4" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
