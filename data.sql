@@ -21,7 +21,12 @@ VALUES (1, 2, 150),
     (2, 1, 180),
     (3, 4, 60),
     (4, 3, 90),
-    (5, 2, 110);
+    (5, 2, 110),
+    (1, 5, 25),
+    (2, 3, 75),
+    (3, 1, 200),
+    (4, 2, 130),
+    (5, 4, 45);
 INSERT INTO besoinVille (id_ville, id_besoin, quantite_par_sinistre)
 VALUES (1, 3, 10),
     (2, 4, 5),
