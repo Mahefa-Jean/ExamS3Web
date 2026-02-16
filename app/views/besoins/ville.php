@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BNGRC</title>
+    <title>Besoins - <?= htmlspecialchars($ville['nom'] ?? 'Ville inconnue') ?></title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
         * {
@@ -115,31 +115,6 @@
             padding-bottom: 0.5rem;
         }
 
-        /* ── Statistiques ── */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-left: 4px solid #3498db;
-        }
-        .stat-card h3 {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-        .stat-card .value {
-            color: #2c3e50;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
         /* ── Tableau ── */
         table {
             width: 100%;
@@ -161,10 +136,6 @@
         }
         tbody tr:hover {
             background-color: #f9f9f9;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
         }
 
         /* ── Boutons ── */
@@ -222,75 +193,58 @@
                 border-left-color: transparent;
                 border-bottom-color: #3498db;
             }
-            .stats {
-                grid-template-columns: 1fr;
-            }
-            .action-buttons {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
 
     <!-- Header : Nom du site -->
-    <?php include __DIR__ . '/header.php'; ?>
+    <?php include __DIR__ . '/../header.php'; ?>
 
     <div class="site-wrapper">
         <!-- Menu : sidebar à gauche -->
-        <?php $currentPage = 'dashboard'; ?>
-        <?php include __DIR__ . '/menu.php'; ?>
+        <?php $currentPage = 'besoins'; ?>
+        <?php include __DIR__ . '/../menu.php'; ?>
 
-        <!-- Contenu : liste de villes -->
+        <!-- Contenu : besoins de la ville -->
         <div class="main-content">
-        <div class="container">
+            <div class="container">
+                <div class="header">
+                    <h1>Besoins de la ville: <?= htmlspecialchars($ville['nom'] ?? 'Ville inconnue') ?></h1>
+                    <p><strong>Nombre de sinistrés:</strong> <?= htmlspecialchars($ville['nombre_sinistre'] ?? '0') ?></p>
+                </div>
 
-        <!-- Statistiques -->
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Nombre de villes</h3>
-                <div class="value"><?= count($villes) ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Total sinistrés</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_sinistre')) ?></div>
-            </div>
-        </div>
-
-        <!-- Tableau des villes -->
-        <h2>Liste des villes</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom de la ville</th>
-                    <th>Nombre de sinistrés</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($villes)): ?>
-                    <?php foreach ($villes as $ville): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($ville['nom']) ?></td>
-                            <td><?= $ville['nombre_sinistre'] ?></td>
-                            <td class="action-buttons">
-                                <a href="/besoins/ville/<?= $ville['id'] ?>" class="btn btn-primary">Voir les besoins</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
+                <h2>Liste des besoins</h2>
+                <?php if(!empty($besoins)): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom du besoin</th>
+                                <th>Prix unitaire</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($besoins as $besoin): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($besoin['id']) ?></td>
+                                    <td><?= htmlspecialchars($besoin['nom']) ?></td>
+                                    <td><?= htmlspecialchars($besoin['prix_unitaire']) ?> DZD</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php else: ?>
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
-                    </tr>
+                    <div class="header">
+                        <p style="text-align: center; color: #7f8c8d;">Aucun besoin enregistré pour cette ville.</p>
+                    </div>
                 <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-    </div><!-- /main-content -->
+            </div>
+        </div><!-- /main-content -->
     </div><!-- /site-wrapper -->
 
     <!-- Footer : ETU -->
-    <?php include __DIR__ . '/footer.php'; ?>
+    <?php include __DIR__ . '/../footer.php'; ?>
 
     <script src="/assets/js/script.js"></script>
 </body>

@@ -16,6 +16,7 @@ $router->group('', function(Router $router) use ($app) {
 	$DashboardControlleur = new DashboardControlleur($app);
 
 	$router->get('/',[$DashboardControlleur,'dashboard']);
+	$router->get('/besoins/ville/@idVille',[$DashboardControlleur,'besoinsVille']);
 
 	// $router->get('/benefice',[$controller,'benefice']);
 	// $router->get('/livraison',[$controller,'livraison']);

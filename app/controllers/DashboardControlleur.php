@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\model\Ville;
+use app\model\Besoin;
 use Flight;
 use flight\Engine;
 
@@ -22,4 +23,5 @@ class DashboardControlleur {
             'villes' => $villes
         ]);
     }
+
 }
