@@ -18,3 +18,14 @@
 
         Controlleur : DashboardControlleur (ok)
         View : dashboard.php
+
+2 - CRUD :
+        Ville :
+                Base : ville
+                Model : ville
+                Fonction : getAllVille()
+                           delete(idVille)
+                           update($ville)
+                           add($ville)
+                Controlleur : VilleController.php
+                View : ville.php
