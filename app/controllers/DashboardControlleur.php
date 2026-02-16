@@ -17,7 +17,7 @@ class DashboardControlleur {
 
         $VilleModel = new Ville(Flight::db());
 
-        $villes = $VilleModel->getAllVilles();
+        $villes = $VilleModel->getVillesAvecStats();
 
         $this->app->render('dashboard', [
             'villes' => $villes

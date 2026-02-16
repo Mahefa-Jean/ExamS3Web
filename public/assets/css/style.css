@@ -615,6 +615,71 @@ tbody tr:nth-child(even) {
 }
 
 /* ============================================
+   FOOTER
+   ============================================ */
+
+.site-footer {
+    background: linear-gradient(135deg, #1f3a52 0%, #2c5282 100%);
+    color: #ecf0f1;
+    padding: 2rem;
+    margin-top: auto;
+    border-top: 4px solid #f39c12;
+}
+
+.site-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.site-footer__logo {
+    margin-bottom: 1rem;
+}
+
+.site-footer__logo-img {
+    height: 80px;
+    width: auto;
+    filter: brightness(0.95);
+    transition: all 0.3s ease;
+}
+
+.site-footer__logo-img:hover {
+    filter: brightness(1.05);
+}
+
+.site-footer__copyright {
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+.site-footer__credits {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 1.5rem;
+    }
+
+    .site-footer__logo-img {
+        height: 60px;
+    }
+
+    .site-footer__copyright {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
    AUTRES STYLES
    ============================================ */
 
