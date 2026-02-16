@@ -12,5 +12,9 @@
                 don
                 distribution
 
+        Fonction : getAllVille()
+                   getDonOneVille()
+                   getBesoinOneVille() 
+
         Controlleur : DashboardControlleur
         View : dashboard.php
