@@ -22,9 +22,9 @@ VALUES (1, 2, 150),
     (3, 4, 60),
     (4, 3, 90),
     (5, 2, 110);
-INSERT INTO besoinVille (id_ville, id_besoin)
-VALUES (1, 3),
-    (2, 4),
-    (3, 2),
-    (4, 5),
-    (5, 1);
+INSERT INTO besoinVille (id_ville, id_besoin, quantite_par_sinistre)
+VALUES (1, 3, 10),
+    (2, 4, 5),
+    (3, 2, 20),
+    (4, 5, 3),
+    (5, 1, 15);
