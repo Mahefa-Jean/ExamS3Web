@@ -251,10 +251,6 @@
                 <h3>Nombre de villes</h3>
                 <div class="value"><?= count($villes) ?></div>
             </div>
-            <div class="stat-card">
-                <h3>Total sinistrés</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_sinistre')) ?></div>
-            </div>
         </div>
 
         <!-- Tableau des villes -->
@@ -263,8 +259,8 @@
             <thead>
                 <tr>
                     <th>Nom de la ville</th>
-                    <th>Nombre de sinistrés</th>
-                    <th>Actions</th>
+                    <th>Besoin</th>
+                    <th>Don</th>
                 </tr>
             </thead>
             <tbody>
@@ -272,10 +268,8 @@
                     <?php foreach ($villes as $ville): ?>
                         <tr>
                             <td><?= htmlspecialchars($ville['nom']) ?></td>
-                            <td><?= $ville['nombre_sinistre'] ?></td>
-                            <td class="action-buttons">
-                                <a href="/besoins/ville/<?= $ville['id'] ?>" class="btn btn-primary">Voir les besoins</a>
-                            </td>
+                            <td><?= htmlspecialchars($ville['besoin']) ?></td>
+                            <td><?= htmlspecialchars($ville['don']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

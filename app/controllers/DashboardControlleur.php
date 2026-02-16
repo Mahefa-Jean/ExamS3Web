@@ -30,13 +30,15 @@ class DashboardControlleur {
             $montantTotalBesoin = $besoinVilleModel->getBesoinOneVille($idVille);
 
             $data[] = array(
-                'ville' => $ville,
+                'nom' => $ville['nom'],
                 'don' => $montantTotalDon,
                 'besoin' => $montantTotalBesoin
             );
+
+            
         }
 
-        $this->app->render('dashboard', $data);
+        $this->app->render('dashboard', ['villes' => $data]);
     }
 
 }

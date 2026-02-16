@@ -21,12 +21,11 @@ class Don {
     
     public function getDonOneVille($idVille){
 
-        $stmt = $this->db->prepare("SELECT montant_total_ville FROM V_somme_montant_par_ville WHERE id_ville = :idVille");
-        $stmt->bindParam(':idVille', $idVille, PDO::PARAM_INT);
-        $stmt->execute();
+        $sql = "SELECT montant_total_distribution FROM V_somme_montant_par_ville WHERE id_ville = :idVille";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':idVille' => $idVille]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['montant_total_ville'] : 0;
-
+        return $result ? $result['montant_total_distribution'] : 0;     
     }
 
     

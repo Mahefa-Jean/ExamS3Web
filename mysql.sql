@@ -55,7 +55,7 @@ JOIN besoin b ON d.id_besoin = b.id;
 CREATE OR REPLACE VIEW V_somme_montant_par_ville AS
 SELECT 
     id_ville,
-    SUM(montant_total) as montant_total_ville
+    SUM(montant_total) as montant_total_distribution
 FROM V_distribution_detaillee
 GROUP BY id_ville;
 
