@@ -36,4 +36,25 @@ CREATE TABLE besoinVille(
     quantite_par_sinistre INT NOT NULL,
     FOREIGN KEY (id_ville) REFERENCES ville(id),
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
-); 
+);
+
+CREATE OR REPLACE VIEW V_distribution_detaillee AS
+SELECT 
+    d.id as id,
+    v.nom as ville,
+    v.id as id_ville,
+    v.nombre_sinistre,
+    b.nom as besoin,
+    b.prix_unitaire,
+    d.quantite,
+    (d.quantite * b.prix_unitaire) as montant_total
+FROM distribution d
+JOIN ville v ON d.id_ville = v.id
+JOIN besoin b ON d.id_besoin = b.id;
+
+CREATE OR REPLACE VIEW V_somme_montant_par_ville AS
+SELECT 
+    id_ville,
+    SUM(montant_total) as montant_total_ville
+FROM V_distribution_detaillee
+GROUP BY id_ville; 

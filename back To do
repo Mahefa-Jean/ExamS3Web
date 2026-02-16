@@ -6,7 +6,7 @@
                                              don (ok)
                                              distribution (ok)
                                              besionVille (ok)
-                     _ donnees initiales :
+                     _ donnees initiales : (ok)
               Model : _ ville (ok)
                       _ besoin (ok)
                       _ don (ok)
@@ -18,3 +18,7 @@
                          getAllDon (ok)
 
               Config : config.php (ok)
+
+2 - Dashboard :
+        Base : vue : V_distribution_detaillee : relie distribution , ville et besoin
+                     V_somme_montant_par_ville : retourne le montant total des dons distribuees pour chaque ville 

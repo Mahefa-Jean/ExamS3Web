@@ -1,20 +1,20 @@
 1 - Dashboard : 
 
-        Base : ville
-               besoin
-               besoinVille
-               don
-               distribution
+        Base : ville (ok)
+               besoin (ok)
+               besoinVille (ok)
+               don (ok)
+               distribution (ok)
 
-        Model : ville
-                besoin
-                besoinVille
-                don
-                distribution
+        Model : ville (ok)
+                besoin (ok)
+                besoinVille (ok)
+                don (ok)
+                distribution (ok)
 
-        Fonction : getAllVille()
-                   getDonOneVille()
-                   getBesoinOneVille() 
+        Fonction : getAllVille() (ok)
+                   getDonOneVille(idville) (ok)
+                   getBesoinOneVille(idville) 
 
         Controlleur : DashboardControlleur
         View : dashboard.php
