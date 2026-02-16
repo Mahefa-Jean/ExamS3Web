@@ -14,7 +14,7 @@
 
         Fonction : getAllVille() (ok)
                    getDonOneVille(idville) (ok)
-                   getBesoinOneVille(idville) 
+                   getBesoinOneVille(idville) (ok)
 
         Controlleur : DashboardControlleur (ok)
         View : dashboard.php
