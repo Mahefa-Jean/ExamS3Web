@@ -1,12 +1,9 @@
 <?php 
 
 namespace app\controllers;
-use app\model\Besoin;
-use app\model\BesoinVille;
 use app\model\Ville;
-use app\model\Distribution;
-use app\model\Don;
-use Flight\engine;
+use Flight;
+use flight\Engine;
 
 class DashboardControlleur {
     protected Engine $app;
@@ -16,9 +13,12 @@ class DashboardControlleur {
     }
 
     public function dashboard() {
-        $villes = Ville::getAllVilles();
 
-        $this->app->render('Dashboard', [
+        $VilleModel = new Ville(Flight::db());
+
+        $villes = $VilleModel->getAllVilles();
+
+        $this->app->render('dashboard', [
             'villes' => $villes
         ]);
     }
