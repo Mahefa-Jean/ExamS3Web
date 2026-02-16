@@ -2,9 +2,15 @@
 
 namespace app\controllers;
 use app\model\Ville;
+<<<<<<< HEAD
+use app\model\Distribution;
+use app\model\Don;
+use Flight\engine;
+=======
 use app\model\Besoin;
 use Flight;
 use flight\Engine;
+>>>>>>> 230ac4383daa2c5699daa9c921491c6ff54b58fe    
 
 class DashboardControlleur {
     protected Engine $app;
@@ -16,14 +22,11 @@ class DashboardControlleur {
     public function dashboard() {
 
         $VilleModel = new Ville(Flight::db());
-        $donVilleModel = new Don(Flight::db());
 
         $villes = $VilleModel->getAllVilles();
-        $donVille = $donVilleModel->getDonOneVille();
 
         $this->app->render('dashboard', [
-            'villes' => $villes,
-            'donVille' => $donVille
+            'villes' => $villes
         ]);
     }
 
