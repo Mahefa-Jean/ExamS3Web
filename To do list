@@ -5,7 +5,7 @@
                                              besoin (ok)
                                              don (ok)
                                              distribution (ok)
-                                             besionVille (ok)
+                                             besoinVille (ok)
                      _ donnees initiales :
               Model : _ ville
                       _ besoin
@@ -18,3 +18,9 @@
                          getAllDon
 
               Config : config.php (ok)
+
+    lien vers la page besoin : 
+    
+        base : besoinVille   
+        page : besoinVille.php
+        Fonction : getBesoinVille(idVille) 
