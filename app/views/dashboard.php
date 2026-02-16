@@ -245,14 +245,6 @@
         <div class="main-content">
         <div class="container">
 
-        <!-- Statistiques -->
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Nombre de villes</h3>
-                <div class="value"><?= count($villes) ?></div>
-            </div>
-        </div>
-
         <!-- Tableau des villes -->
         <h2>Liste des villes</h2>
         <table>
