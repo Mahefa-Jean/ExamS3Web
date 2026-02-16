@@ -1,0 +1,25 @@
+I)Frontend
+-Formulaire
+-Style css
+-Bouton
+-Affichage de donnée
+
+A-Page d’accueil
+ -Liste des villes
+ -Total besoins par ville
+ -Total dons reçus
+Boutons:
+ -Ajouter ville
+ -Ajouter besoin
+ -Ajouter don
+ -Distribuer
+
+B-Page pour la gestion des villes
+ -Formulaire : Ajouter une ville
+ -Tableau : Liste des villes
+Boutons 
+ -supprimer / modifier
+
+C-Page pour la gestion des besoins
+
+D-page pour la gestion des dons
