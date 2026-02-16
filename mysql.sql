@@ -57,4 +57,25 @@ SELECT
     id_ville,
     SUM(montant_total) as montant_total_ville
 FROM V_distribution_detaillee
+GROUP BY id_ville;
+
+CREATE OR REPLACE VIEW V_besoin_ville_detail AS
+SELECT 
+    bv.id as id,
+    v.id as id_ville,
+    v.nom as ville,
+    v.nombre_sinistre,
+    b.nom as besoin,
+    b.prix_unitaire,
+    bv.quantite_par_sinistre,
+    (v.nombre_sinistre * b.prix_unitaire * bv.quantite_par_sinistre) as total_prix_besoin
+FROM besoinVille bv
+JOIN ville v ON bv.id_ville = v.id
+JOIN besoin b ON bv.id_besoin = b.id;
+
+CREATE OR REPLACE VIEW V_somme_besoin_par_ville AS
+SELECT 
+    id_ville,
+    SUM(total_prix_besoin) as montant_total_besoin
+FROM V_besoin_ville_detail
 GROUP BY id_ville; 
