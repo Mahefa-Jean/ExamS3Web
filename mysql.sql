@@ -33,6 +33,7 @@ CREATE TABLE besoinVille(
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_ville INT,
     id_besoin INT NOT NULL,
+    quantite_par_sinistre INT NOT NULL,
     FOREIGN KEY (id_ville) REFERENCES ville(id),
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 ); 
