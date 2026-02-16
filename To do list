@@ -16,5 +16,5 @@
                    getDonOneVille(idville) (ok)
                    getBesoinOneVille(idville) 
 
-        Controlleur : DashboardControlleur
+        Controlleur : DashboardControlleur (ok)
         View : dashboard.php

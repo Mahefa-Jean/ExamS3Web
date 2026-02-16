@@ -16,11 +16,14 @@ class DashboardControlleur {
     public function dashboard() {
 
         $VilleModel = new Ville(Flight::db());
+        $donVilleModel = new Don(Flight::db());
 
         $villes = $VilleModel->getAllVilles();
+        $donVille = $donVilleModel->getDonOneVille();
 
         $this->app->render('dashboard', [
-            'villes' => $villes
+            'villes' => $villes,
+            'donVille' => $donVille
         ]);
     }
 
