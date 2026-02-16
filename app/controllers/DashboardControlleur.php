@@ -24,4 +24,17 @@ class DashboardControlleur {
         ]);
     }
 
+    public function besoinsVille($idVille) {
+        $VilleModel = new Ville(Flight::db());
+        $BesoinModel = new Besoin(Flight::db());
+
+        $ville = $VilleModel->getVilleById($idVille);
+        $besoins = $BesoinModel->getBesoinsParVille($idVille);
+
+        $this->app->render('besoins/ville', [
+            'ville' => $ville,
+            'besoins' => $besoins
+        ]);
+    }
+
 }

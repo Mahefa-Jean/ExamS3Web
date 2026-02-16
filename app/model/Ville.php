@@ -19,6 +19,12 @@ class Ville {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getVilleById($id) {
+        $stmt = $this->db->prepare("SELECT * FROM ville WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getVillesAvecStats() {
         $sql = "SELECT 
                     v.id,

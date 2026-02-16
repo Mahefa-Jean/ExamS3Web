@@ -20,6 +20,86 @@ body {
 }
 
 /* ============================================
+   HEADER
+   ============================================ */
+
+.site-header {
+    background: white;
+    color: #1f3a52;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.site-header__logo-left,
+.site-header__logo-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.site-header__logo-img-left,
+.site-header__logo-img-right {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
+}
+
+.site-header__logo-img-left:hover,
+.site-header__logo-img-right:hover {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(1.05);
+}
+
+.site-header__inner {
+    flex: 1;
+    text-align: center;
+}
+
+.site-header__title {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.site-header__subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .site-header__logo-left,
+    .site-header__logo-right {
+        height: auto;
+    }
+
+    .site-header__logo-img-left,
+    .site-header__logo-img-right {
+        height: 60px;
+    }
+
+    .site-header__title {
+        font-size: 1.4rem;
+    }
+
+    .site-header__subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
    NAVIGATION
    ============================================ */
 
@@ -636,21 +716,6 @@ tbody tr:nth-child(even) {
     gap: 1.5rem;
 }
 
-.site-footer__logo {
-    margin-bottom: 1rem;
-}
-
-.site-footer__logo-img {
-    height: 80px;
-    width: auto;
-    filter: brightness(0.95);
-    transition: all 0.3s ease;
-}
-
-.site-footer__logo-img:hover {
-    filter: brightness(1.05);
-}
-
 .site-footer__copyright {
     font-weight: 600;
     font-size: 1rem;
@@ -668,10 +733,6 @@ tbody tr:nth-child(even) {
 @media (max-width: 768px) {
     .site-footer {
         padding: 1.5rem;
-    }
-
-    .site-footer__logo-img {
-        height: 60px;
     }
 
     .site-footer__copyright {

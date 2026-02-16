@@ -18,6 +18,35 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/',[$DashboardControlleur,'dashboard']);
 	$router->get('/besoins/ville/@idVille',[$DashboardControlleur,'besoinsVille']);
 
+	// Pages principales (liens de navigation)
+	$router->get('/villes', function() use ($app) {
+		$VilleModel = new \app\model\Ville(\Flight::db());
+		$villes = $VilleModel->getAllVilles();
+		$app->render('villes/index', ['villes' => $villes]);
+	});
+
+	$router->get('/besoins', function() use ($app) {
+		$BesoinModel = new \app\model\Besoin(\Flight::db());
+		$besoins = $BesoinModel->getAllBesoins();
+		$app->render('besoins/index', ['besoins' => $besoins]);
+	});
+
+	$router->get('/dons', function() use ($app) {
+		$DonModel = new \app\model\Don(\Flight::db());
+		$dons = $DonModel->getAllDon();
+		$app->render('dons/index', ['dons' => $dons]);
+	});
+
+	$router->get('/distribution', function() use ($app) {
+		$DistributionModel = new \app\model\Distribution(\Flight::db());
+		$distributions = $DistributionModel->getDistributionDetaillee();
+		$app->render('distribution/index', ['distributions' => $distributions]);
+	});
+
+	$router->get('/recapitulatif', function() use ($app) {
+		$app->render('recapitulatif/index');
+	});
+
 	// $router->get('/benefice',[$controller,'benefice']);
 	// $router->get('/livraison',[$controller,'livraison']);
 	// $router->get('/colis',[$controller,'colis']);
