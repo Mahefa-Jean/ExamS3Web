@@ -1,0 +1,6 @@
+Tableau de bord : 
+    - ListeControlleur.php : - fonctions qui affiches la liste les villes, nombrs sinistres
+                             - redirections vers la route
+    
+    - ListeRoute.php : - route qui affiche la liste des villes et nombre de sinistres
+                       - routes vers la vue

@@ -1,6 +1,6 @@
 <?php
 
-use app\controllers\loginControlleur;
+use app\controllers\DashboardControlleur;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -13,9 +13,9 @@ use flight\net\Router;
 // This wraps all routes in the group with the SecurityHeadersMiddleware
 $router->group('', function(Router $router) use ($app) {
 
-	$loginControlleur = new loginControlleur($app);
+	$DashboardControlleur = new DashboardControlleur($app);
 
-	$router->get('/',[$loginControlleur,'home']);
+	$router->get('/',[$DashboardControlleur,'dashboard']);
 
 	// $router->get('/benefice',[$controller,'benefice']);
 	// $router->get('/livraison',[$controller,'livraison']);
