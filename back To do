@@ -1,0 +1,20 @@
+1 - Liste des villes avec leurs besoins :
+
+    backend : base : _ creation de la base : BNGRC (ok)
+                     _ creation des tables : ville (ok)
+                                             besoin (ok)
+                                             don (ok)
+                                             distribution (ok)
+                                             besionVille (ok)
+                     _ donnees initiales :
+              Model : _ ville
+                      _ besoin
+                      _ don
+                      _ distribution
+                      _ besionVille
+
+              Fonction : getAllVille
+                         getBesoinVille(idVille)
+                         getAllDon
+
+              Config : config.php (ok)
