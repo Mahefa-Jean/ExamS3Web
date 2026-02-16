@@ -15,36 +15,87 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f5f5;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        nav {
-            background-color: #2c3e50;
+
+        /* ── Header ── */
+        .site-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
-        nav ul {
+        .site-header__title {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+        }
+        .site-header__subtitle {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        /* ── Wrapper sidebar + contenu ── */
+        .site-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        /* ── Menu / Sidebar à gauche ── */
+        .site-menu {
+            width: 240px;
+            min-width: 240px;
+            background-color: #2c3e50;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+            min-height: calc(100vh - 120px);
+        }
+        .site-menu__title {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .site-menu__list {
             list-style: none;
             display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 0.15rem;
         }
-        nav a {
-            color: white;
+        .site-menu__link {
+            display: block;
+            color: #bdc3c7;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            padding: 0.7rem 1.5rem;
+            transition: all 0.25s;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
         }
-        nav a:hover {
-            background-color: rgba(255,255,255,0.2);
+        .site-menu__link:hover {
+            background-color: rgba(255,255,255,0.08);
+            color: white;
+            border-left-color: #3498db;
         }
-        nav a.active {
-            background-color: #3498db;
+        .site-menu__link.active {
+            background-color: rgba(52, 152, 219, 0.15);
+            color: white;
+            border-left-color: #3498db;
+            font-weight: 600;
+        }
+
+        /* ── Contenu ── */
+        .main-content {
+            flex: 1;
+            overflow-x: auto;
         }
         .container {
             max-width: 1200px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
         .header {
             background: white;
@@ -55,7 +106,7 @@
         }
         h1 {
             color: #2c3e50;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         h2 {
             color: #34495e;
@@ -63,31 +114,8 @@
             border-bottom: 2px solid #3498db;
             padding-bottom: 0.5rem;
         }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background-color: #7f8c8d;
-        }
+
+        /* ── Tableau ── */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -109,85 +137,114 @@
         tbody tr:hover {
             background-color: #f9f9f9;
         }
-        .info-box {
-            background: #ecf0f1;
-            padding: 1rem;
+
+        /* ── Boutons ── */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
             border-radius: 4px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #3498db;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
         }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            background-color: #1a252f;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 1rem 2rem;
+        }
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            nav ul {
+            .site-wrapper {
                 flex-direction: column;
+            }
+            .site-menu {
+                width: 100%;
+                min-width: 100%;
+                min-height: auto;
+                padding: 0.5rem 0;
+            }
+            .site-menu__list {
+                flex-direction: row;
+                flex-wrap: wrap;
                 gap: 0;
             }
-            nav a {
-                display: block;
-                padding: 0.75rem;
+            .site-menu__link {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
             }
-            .btn-group {
-                flex-direction: column;
+            .site-menu__link:hover,
+            .site-menu__link.active {
+                border-left-color: transparent;
+                border-bottom-color: #3498db;
             }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/villes">Gestion Villes</a></li>
-            <li><a href="/besoins" class="active">Gestion Besoins</a></li>
-            <li><a href="/dons">Gestion Dons</a></li>
-            <li><a href="/distribution">Distribution</a></li>
-            <li><a href="/recapitulatif">Récapitulatif</a></li>
-        </ul>
-    </nav>
 
-    <div class="container">
-        <div class="header">
-            <h1>Besoins de la ville: <?= htmlspecialchars($ville['nom'] ?? 'Ville inconnue') ?></h1>
-            <div class="info-box">
-                <p><strong>Ville:</strong> <?= htmlspecialchars($ville['nom'] ?? 'N/A') ?></p>
-                <p><strong>Nombre de sinistrés:</strong> <?= htmlspecialchars($ville['nombre_sinistre'] ?? '0') ?></p>
-            </div>
-            <div class="btn-group">
-                <a href="/" class="btn btn-secondary">Retour au Dashboard</a>
-            </div>
-        </div>
+    <!-- Header : Nom du site -->
+    <?php include __DIR__ . '/../header.php'; ?>
 
-        <div class="header">
-            <h2>Liste des besoins</h2>
-            <?php if(!empty($besoins)): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom du besoin</th>
-                            <th>Prix unitaire</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($besoins as $besoin): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($besoin['id']) ?></td>
-                                <td><?= htmlspecialchars($besoin['nom']) ?></td>
-                                <td><?= htmlspecialchars($besoin['prix_unitaire']) ?> DZD</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <div class="info-box">
-                    <p style="border: none; padding: 0;">Aucun besoin enregistré pour cette ville.</p>
+    <div class="site-wrapper">
+        <!-- Menu : sidebar à gauche -->
+        <?php $currentPage = 'besoins'; ?>
+        <?php include __DIR__ . '/../menu.php'; ?>
+
+        <!-- Contenu : besoins de la ville -->
+        <div class="main-content">
+            <div class="container">
+                <div class="header">
+                    <h1>Besoins de la ville: <?= htmlspecialchars($ville['nom'] ?? 'Ville inconnue') ?></h1>
+                    <p><strong>Nombre de sinistrés:</strong> <?= htmlspecialchars($ville['nombre_sinistre'] ?? '0') ?></p>
                 </div>
-            <?php endif; ?>
-        </div>
-    </div>
+
+                <h2>Liste des besoins</h2>
+                <?php if(!empty($besoins)): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom du besoin</th>
+                                <th>Prix unitaire</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($besoins as $besoin): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($besoin['id']) ?></td>
+                                    <td><?= htmlspecialchars($besoin['nom']) ?></td>
+                                    <td><?= htmlspecialchars($besoin['prix_unitaire']) ?> DZD</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="header">
+                        <p style="text-align: center; color: #7f8c8d;">Aucun besoin enregistré pour cette ville.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div><!-- /main-content -->
+    </div><!-- /site-wrapper -->
+
+    <!-- Footer : ETU -->
+    <?php include __DIR__ . '/../footer.php'; ?>
 
     <script src="/assets/js/script.js"></script>
 </body>
