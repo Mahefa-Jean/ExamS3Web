@@ -17,6 +17,7 @@ CREATE TABLE don(
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_besoin INT NOT NULL,
     quantite INT NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 );
 
@@ -25,6 +26,7 @@ CREATE TABLE distribution(
     id_ville INT,
     id_besoin INT NOT NULL,
     quantite INT NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_ville) REFERENCES ville(id),
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 );
@@ -47,6 +49,7 @@ SELECT
     b.nom as besoin,
     b.prix_unitaire,
     d.quantite,
+    d.date,
     (d.quantite * b.prix_unitaire) as montant_total
 FROM distribution d
 JOIN ville v ON d.id_ville = v.id

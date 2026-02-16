@@ -15,8 +15,33 @@ class Don {
     }
 
     public function getAllDon() {
-        $stmt = $this->db->query("SELECT * FROM don");
+        $stmt = $this->db->query("SELECT d.id, b.nom as besoin, d.quantite, d.date FROM don d JOIN besoin b ON d.id_besoin = b.id ORDER BY d.date DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createDon($id_besoin, $quantite) {
+        $sql = "INSERT INTO don (id_besoin, quantite, date) VALUES (:id_besoin, :quantite, NOW())";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_besoin' => $id_besoin, ':quantite' => $quantite]);
+    }
+
+    public function getById($id) {
+        $sql = "SELECT * FROM don WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($id, $id_besoin, $quantite) {
+        $sql = "UPDATE don SET id_besoin = :id_besoin, quantite = :quantite WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id, ':id_besoin' => $id_besoin, ':quantite' => $quantite]);
+    }
+
+    public function delete($id) {
+        $sql = "DELETE FROM don WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
     }
     
     public function getDonOneVille($idVille){

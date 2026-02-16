@@ -21,11 +21,20 @@
 
 2 - CRUD :
         Ville :
-                Base : ville
-                Model : ville
-                Fonction : getAllVille()
+                Base : ville (ok)
+                Model : ville (ok)
+                Fonction : getAllVille() (ok)
                            delete(idVille)
                            update($ville)
                            add($ville)
-                Controlleur : VilleController.php
-                View : ville.php
+                Controlleur : VilleController.php (ok)
+                View : ville.php : afficher (ok)
+                                   ajouter (ok)
+                                   supprimer (ok)
+                                   modifier  (ok)
+
+        Besoin , Don , Distribution
+
+3 - Filtre des 
+
+        

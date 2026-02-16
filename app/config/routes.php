@@ -1,6 +1,10 @@
 <?php
 
 use app\controllers\DashboardControlleur;
+use app\controllers\VilleController;
+use app\controllers\BesoinController;
+use app\controllers\DonController;
+use app\controllers\DistributionController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -14,9 +18,47 @@ use flight\net\Router;
 $router->group('', function(Router $router) use ($app) {
 
 	$DashboardControlleur = new DashboardControlleur($app);
+	$VilleController = new VilleController($app);
+	$BesoinController = new BesoinController($app);
+	$DonController = new DonController($app);
+	$DistributionController = new DistributionController($app);
 
+	// Dashboard
 	$router->get('/',[$DashboardControlleur,'dashboard']);
-	$router->get('/besoins/ville/@idVille',[$DashboardControlleur,'besoinsVille']);
+
+	// Villes
+	$router->get('/villes',[$VilleController,'liste']);
+	$router->get('/villes/besoins/@id',[$VilleController,'besoins']);
+	$router->post('/villes/besoins/@id/create',[$VilleController,'createBesoinVille']);
+	$router->get('/villes/besoins/@id_ville/edit/@id',[$VilleController,'editBesoinVille']);
+	$router->post('/villes/besoins/@id_ville/update/@id',[$VilleController,'updateBesoinVille']);
+	$router->get('/villes/besoins/@id_ville/delete/@id',[$VilleController,'deleteBesoinVille']);
+	$router->get('/villes/edit/@id',[$VilleController,'edit']);
+	$router->post('/villes/update/@id',[$VilleController,'update']);
+	$router->get('/villes/delete/@id',[$VilleController,'delete']);
+	$router->post('/villes/create',[$VilleController,'create']);
+
+	// Besoins
+	$router->get('/besoins',[$BesoinController,'liste']);
+	$router->get('/besoins/edit/@id',[$BesoinController,'edit']);
+	$router->post('/besoins/update/@id',[$BesoinController,'update']);
+	$router->get('/besoins/delete/@id',[$BesoinController,'delete']);
+	$router->post('/besoins/create',[$BesoinController,'create']);
+
+	// Dons
+	$router->get('/dons',[$DonController,'liste']);
+	$router->get('/dons/edit/@id',[$DonController,'edit']);
+	$router->post('/dons/update/@id',[$DonController,'update']);
+	$router->get('/dons/delete/@id',[$DonController,'delete']);
+	$router->post('/dons/create',[$DonController,'create']);
+
+	// Distributions
+	$router->get('/distributions',[$DistributionController,'liste']);
+	$router->get('/distributions/edit/@id',[$DistributionController,'edit']);
+	$router->post('/distributions/update/@id',[$DistributionController,'update']);
+	$router->get('/distributions/delete/@id',[$DistributionController,'delete']);
+	$router->post('/distributions/create',[$DistributionController,'create']);
+
 
 	// $router->get('/benefice',[$controller,'benefice']);
 	// $router->get('/livraison',[$controller,'livraison']);

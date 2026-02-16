@@ -24,8 +24,36 @@ class BesoinVille {
 
     }
 
+    public function getBesoinsDetailByVille($idVille){
+        $sql = "SELECT * FROM V_besoin_ville_detail WHERE id_ville = :idVille";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':idVille' => $idVille]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public function getById($id) {
+        $sql = "SELECT * FROM besoinVille WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
+    public function createBesoinVille($id_ville, $id_besoin, $quantite_par_sinistre) {
+        $sql = "INSERT INTO besoinVille (id_ville, id_besoin, quantite_par_sinistre) VALUES (:id_ville, :id_besoin, :quantite_par_sinistre)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_ville' => $id_ville, ':id_besoin' => $id_besoin, ':quantite_par_sinistre' => $quantite_par_sinistre]);
+    }
 
-    
+    public function update($id, $id_besoin, $quantite_par_sinistre) {
+        $sql = "UPDATE besoinVille SET id_besoin = :id_besoin, quantite_par_sinistre = :quantite_par_sinistre WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id, ':id_besoin' => $id_besoin, ':quantite_par_sinistre' => $quantite_par_sinistre]);
+    }
+
+    public function delete($id) {
+        $sql = "DELETE FROM besoinVille WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    }
+
 }
