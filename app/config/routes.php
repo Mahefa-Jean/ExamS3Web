@@ -1,6 +1,6 @@
 <?php
 
-use app\controllers\loginControlleur;
+use app\controllers\DashboardControlleur;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
