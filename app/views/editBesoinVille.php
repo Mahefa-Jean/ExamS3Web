@@ -225,8 +225,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="quantite_par_sinistre">Quantité par sinistré</label>
-                    <input type="number" name="quantite_par_sinistre" id="quantite_par_sinistre" value="<?= htmlspecialchars($besoinVille['quantite_par_sinistre']) ?>" required min="1">
+                    <label for="quantite">Quantité</label>
+                    <input type="number" name="quantite" id="quantite" value="<?= htmlspecialchars($besoinVille['quantite']) ?>" required min="1">
                 </div>
 
                 <div class="form-actions">

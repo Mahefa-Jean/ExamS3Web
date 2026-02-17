@@ -266,8 +266,8 @@
                     </select>
                 </div>
                 <div style="flex: 0.5;">
-                    <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Quantité par sinistré</label>
-                    <input type="number" name="quantite_par_sinistre" placeholder="Quantité" required min="1" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                    <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Quantité</label>
+                    <input type="number" name="quantite" placeholder="Quantité" required min="1" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 </div>
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
@@ -281,7 +281,7 @@
                     <tr>
                         <th>Besoin</th>
                         <th>Prix unitaire</th>
-                        <th>Quantité par sinistré</th>
+                        <th>Quantité</th>
                         <th>Total prix besoin</th>
                         <th>Actions</th>
                     </tr>
@@ -296,7 +296,7 @@
                             <tr>
                                 <td><?= htmlspecialchars($besoin['besoin']) ?></td>
                                 <td><?= number_format($besoin['prix_unitaire'], 2, ',', ' ') ?> Ar</td>
-                                <td><?= htmlspecialchars($besoin['quantite_par_sinistre']) ?></td>
+                                <td><?= htmlspecialchars($besoin['quantite']) ?></td>
                                 <td><?= number_format($besoin['total_prix_besoin'], 2, ',', ' ') ?> Ar</td>
                                 <td>
                                     <div class="action-buttons" style="display: flex; gap: 0.5rem;">

@@ -13,9 +13,14 @@
         <li><a href="<?= BASE_URL ?>/villes" class="site-menu__link <?= ($currentPage ?? '') === 'villes' ? 'active' : '' ?>">Villes</a></li>
         <li><a href="<?= BASE_URL ?>/besoins" class="site-menu__link <?= ($currentPage ?? '') === 'besoins' ? 'active' : '' ?>">Besoins</a></li>
         <li><a href="<?= BASE_URL ?>/dons" class="site-menu__link <?= ($currentPage ?? '') === 'dons' ? 'active' : '' ?>">Dons</a></li>
+        <li><a href="<?= BASE_URL ?>/dispatch" class="site-menu__link <?= ($currentPage ?? '') === 'dispatch' ? 'active' : '' ?>">Dispatch</a></li>
         <li><a href="<?= BASE_URL ?>/distributions" class="site-menu__link <?= ($currentPage ?? '') === 'distribution' ? 'active' : '' ?>">Distribution</a></li>
         <li><a href="<?= BASE_URL ?>/achats" class="site-menu__link <?= ($currentPage ?? '') === 'achats' ? 'active' : '' ?>">Achats</a></li>
         <li><a href="<?= BASE_URL ?>/recapitulatif" class="site-menu__link <?= ($currentPage ?? '') === 'recapitulatif' ? 'active' : '' ?>">Récapitulation</a></li>
+<<<<<<< HEAD
 >>>>>>> origin/backend
+=======
+        <li><a href="<?= BASE_URL ?>/reinitialiser" class="site-menu__link" style="background-color:#e74c3c; color:#fff; text-align:center; border-radius:4px; margin-top:10px;" onclick="return confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ?')">Réinitialiser</a></li>
+>>>>>>> origin/main
     </ul>
 </nav>

@@ -114,4 +114,43 @@ class Don {
             }
         }
     }
+
+    /**
+     * Diminuer les dons en argent d'un montant donné (utilisé lors d'un achat)
+     * On convertit le montant en quantité via le prix unitaire du besoin argent
+     */
+    public function diminuerQuantiteArgent($montant) {
+        // Récupérer les dons en argent (catégorie argent)
+        $sql = "SELECT d.id, d.quantite, b.prix_unitaire 
+                FROM don d 
+                JOIN besoin b ON d.id_besoin = b.id 
+                JOIN categorie c ON b.id_categorie = c.id 
+                WHERE c.nom = 'argent' AND d.quantite > 0 
+                ORDER BY d.date ASC";
+        $stmt = $this->db->query($sql);
+        $dons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $reste = $montant;
+
+        foreach ($dons as $don) {
+            if ($reste <= 0) break;
+
+            $valeur_don = $don['quantite'] * $don['prix_unitaire'];
+
+            if ($valeur_don >= $reste) {
+                // Ce don suffit - calculer combien de quantité retirer
+                $qte_a_retirer = ceil($reste / $don['prix_unitaire']);
+                $nouvelle_quantite = max(0, $don['quantite'] - $qte_a_retirer);
+                $updateSql = "UPDATE don SET quantite = :quantite WHERE id = :id";
+                $updateStmt = $this->db->prepare($updateSql);
+                $updateStmt->execute([':quantite' => $nouvelle_quantite, ':id' => $don['id']]);
+                $reste = 0;
+            } else {
+                $reste -= $valeur_don;
+                $updateSql = "UPDATE don SET quantite = 0 WHERE id = :id";
+                $updateStmt = $this->db->prepare($updateSql);
+                $updateStmt->execute([':id' => $don['id']]);
+            }
+        }
+    }
 }

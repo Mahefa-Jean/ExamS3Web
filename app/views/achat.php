@@ -105,6 +105,10 @@
             <div class="simulation-box">
                 <h3>📋 Résultat de la Simulation</h3>
                 <div class="simulation-detail">
+                    <span>Ville :</span>
+                    <span><strong><?= htmlspecialchars($simulation['ville']['nom'] ?? '-') ?></strong></span>
+                </div>
+                <div class="simulation-detail">
                     <span>Besoin :</span>
                     <span><?= htmlspecialchars($simulation['besoin']['nom']) ?> <span class="badge badge-<?= $simulation['besoin']['categorie'] ?? '' ?>"><?= htmlspecialchars(ucfirst($simulation['besoin']['categorie'] ?? '')) ?></span></span>
                 </div>
@@ -138,6 +142,7 @@
                 <?php if ($simulation['achat_possible']): ?>
                     <div class="alert alert-success" style="margin-top: 1rem;">✅ Achat possible ! Le solde est suffisant.</div>
                     <form method="POST" action="<?= BASE_URL ?>/achats/valider" style="margin-top: 1rem;">
+                        <input type="hidden" name="id_ville" value="<?= $form_data['id_ville'] ?>">
                         <input type="hidden" name="id_besoin" value="<?= $form_data['id_besoin'] ?>">
                         <input type="hidden" name="quantite" value="<?= $form_data['quantite'] ?>">
                         <input type="hidden" name="frais_pourcent" value="<?= $form_data['frais_pourcent'] ?>">
@@ -149,11 +154,56 @@
             </div>
         <?php endif; ?>
 
+        <!-- Besoins restants (nature/matériaux) -->
+        <?php if (!empty($besoins_restants)): ?>
+        <div class="header">
+            <h2>📋 Besoins restants des villes (nature / matériaux)</h2>
+            <p style="color: #7f8c8d; margin-bottom: 1rem;">Ces besoins peuvent être achetés via les dons en argent.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ville</th>
+                        <th>Besoin</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire</th>
+                        <th>Coût total</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($besoins_restants as $br): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($br['ville']) ?></td>
+                            <td><?= htmlspecialchars($br['besoin']) ?></td>
+                            <td><strong><?= $br['quantite'] ?></strong></td>
+                            <td><?= number_format($br['prix_unitaire'], 2) ?> Ar</td>
+                            <td><?= number_format($br['total_prix_besoin'], 2) ?> Ar</td>
+                            <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($br['date']))) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+
         <!-- Formulaire d'achat / simulation -->
         <div class="header">
             <h2>🛒 Nouvel Achat (via dons en argent)</h2>
             <form method="POST" action="<?= BASE_URL ?>/achats/simuler" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+                    <div style="flex: 1; min-width: 150px;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2c3e50;">Ville</label>
+                        <select name="id_ville" required>
+                            <option value="">-- Choisir une ville --</option>
+                            <?php if (!empty($villes)): ?>
+                                <?php foreach ($villes as $ville): ?>
+                                    <option value="<?= $ville['id'] ?>" <?= (isset($form_data) && $form_data['id_ville'] == $ville['id']) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($ville['nom']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
                     <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2c3e50;">Besoin (nature/matériaux)</label>
                         <select name="id_besoin" required>
@@ -182,10 +232,18 @@
             </form>
         </div>
 
-        <!-- Filtre par besoin / catégorie -->
+        <!-- Filtre par ville / besoin -->
         <div class="header">
             <h2>📋 Liste des achats</h2>
             <div class="filter-controls">
+                <select id="filterVille" style="min-width: 200px;">
+                    <option value="">-- Toutes les villes --</option>
+                    <?php if (!empty($villes)): ?>
+                        <?php foreach ($villes as $ville): ?>
+                            <option value="<?= strtolower(htmlspecialchars($ville['nom'])) ?>"><?= htmlspecialchars($ville['nom']) ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
                 <input type="text" id="filterInput" placeholder="🔍 Filtrer par nom besoin, catégorie..." style="flex: 1; min-width: 250px;">
                 <button type="button" id="resetFilter" class="btn" style="background-color: #95a5a6; color: white; display: none;">Réinitialiser</button>
                 <span class="filter-result"><span id="resultCount"><?= count($achats) ?></span> achat(s) trouvé(s)</span>
@@ -195,6 +253,7 @@
                 <thead>
                     <tr>
                         <th>Id</th>
+                        <th>Ville</th>
                         <th>Besoin</th>
                         <th>Catégorie</th>
                         <th>Qté</th>
@@ -209,8 +268,9 @@
                 <tbody id="achatTableBody">
                     <?php if (!empty($achats)): ?>
                         <?php foreach ($achats as $achat): ?>
-                            <tr class="achat-row" data-besoin="<?= strtolower(htmlspecialchars($achat['besoin'])) ?>" data-categorie="<?= strtolower($achat['categorie']) ?>">
+                            <tr class="achat-row" data-ville="<?= strtolower(htmlspecialchars($achat['ville'] ?? '')) ?>" data-besoin="<?= strtolower(htmlspecialchars($achat['besoin'])) ?>" data-categorie="<?= strtolower($achat['categorie']) ?>">
                                 <td><?= htmlspecialchars($achat['id']) ?></td>
+                                <td><?= htmlspecialchars($achat['ville'] ?? '-') ?></td>
                                 <td><?= htmlspecialchars($achat['besoin']) ?></td>
                                 <td><span class="badge badge-<?= $achat['categorie'] ?>"><?= htmlspecialchars(ucfirst($achat['categorie'])) ?></span></td>
                                 <td><?= htmlspecialchars($achat['quantite']) ?></td>
@@ -228,7 +288,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr id="noResultRow">
-                            <td colspan="10" style="text-align: center; color: #7f8c8d;">Aucun achat enregistré</td>
+                            <td colspan="11" style="text-align: center; color: #7f8c8d;">Aucun achat enregistré</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -244,20 +304,25 @@
     
     <script nonce="<?= Flight::app()->get('csp_nonce') ?>">
         const filterInput = document.getElementById('filterInput');
+        const filterVille = document.getElementById('filterVille');
         const resetButton = document.getElementById('resetFilter');
         const resultCount = document.getElementById('resultCount');
         const tableRows = document.querySelectorAll('.achat-row');
 
-        filterInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
+        function applyFilters() {
+            const searchTerm = filterInput.value.toLowerCase().trim();
+            const villeFilter = filterVille.value.toLowerCase().trim();
             let visibleCount = 0;
 
             tableRows.forEach(row => {
                 const besoin = row.getAttribute('data-besoin');
                 const categorie = row.getAttribute('data-categorie');
-                const isVisible = besoin.includes(searchTerm) || categorie.includes(searchTerm) || searchTerm === '';
+                const ville = row.getAttribute('data-ville');
 
-                if (isVisible) {
+                const matchText = besoin.includes(searchTerm) || categorie.includes(searchTerm) || searchTerm === '';
+                const matchVille = villeFilter === '' || ville === villeFilter;
+
+                if (matchText && matchVille) {
                     row.classList.remove('hidden');
                     visibleCount++;
                 } else {
@@ -266,18 +331,16 @@
             });
 
             resultCount.textContent = visibleCount;
-            resetButton.style.display = searchTerm ? 'inline-block' : 'none';
+            resetButton.style.display = (searchTerm || villeFilter) ? 'inline-block' : 'none';
+        }
 
-            // Afficher/masquer message "aucun résultat"
-            const noResultRow = document.getElementById('noResultRow');
-            if (noResultRow) {
-                noResultRow.style.display = visibleCount === 0 && tableRows.length > 0 ? 'table-row' : 'none';
-            }
-        });
+        filterInput.addEventListener('input', applyFilters);
+        filterVille.addEventListener('change', applyFilters);
 
         resetButton.addEventListener('click', function() {
             filterInput.value = '';
-            filterInput.dispatchEvent(new Event('input'));
+            filterVille.value = '';
+            applyFilters();
         });
     </script>
 </body>

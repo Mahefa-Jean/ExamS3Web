@@ -68,11 +68,19 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/distributions/delete/@id',[$DistributionController,'delete']);
 	$router->post('/distributions/create',[$DistributionController,'create']);
 
+	// Dispatch
+	$router->get('/dispatch',[$DistributionController,'dispatch']);
+	$router->post('/dispatch/simuler',[$DistributionController,'simulerDispatch']);
+	$router->post('/dispatch/executer',[$DistributionController,'executerDispatch']);
+
 	// Achats
 	$router->get('/achats',[$AchatController,'liste']);
 	$router->post('/achats/simuler',[$AchatController,'simuler']);
 	$router->post('/achats/valider',[$AchatController,'valider']);
 	$router->get('/achats/delete/@id',[$AchatController,'delete']);
+
+	// Réinitialisation
+	$router->get('/reinitialiser',[$DashboardControlleur,'reinitialiser']);
 
 
 	// Pages principales (liens de navigation)

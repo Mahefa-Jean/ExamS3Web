@@ -1,0 +1,11 @@
+V1 - 
+    On saisie les besoins des sinistrés par ville (ok)
+    On saisie les don (ok)
+    On simule le dispatch des dons par ordre de date et de saisie
+
+    Objetctif : 
+        Dans une page tableau de bord, on doit voir la liste des villes avec les besoins, et les dons attribués à
+        chaque ville. (ok)
+
+v2 - On peut acheter via les dons en argent les besoins en nature et en matériaux selon les prix unitaires
+     
