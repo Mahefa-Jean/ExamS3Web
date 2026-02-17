@@ -68,6 +68,10 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/distributions/delete/@id',[$DistributionController,'delete']);
 	$router->post('/distributions/create',[$DistributionController,'create']);
 
+	// Dispatch
+	$router->get('/dispatch',[$DistributionController,'dispatch']);
+	$router->post('/dispatch/executer',[$DistributionController,'executerDispatch']);
+
 	// Achats
 	$router->get('/achats',[$AchatController,'liste']);
 	$router->post('/achats/simuler',[$AchatController,'simuler']);

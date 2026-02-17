@@ -293,7 +293,7 @@
                                         <thead style="background-color: #7f8c8d;">
                                             <tr>
                                                 <th style="padding: 0.5rem; font-size: 0.85rem;">Besoin</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Qté/sinistré</th>
+                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Quantité</th>
                                                 <th style="padding: 0.5rem; font-size: 0.85rem;">Prix unitaire</th>
                                                 <th style="padding: 0.5rem; font-size: 0.85rem;">Total</th>
                                             </tr>
@@ -302,7 +302,7 @@
                                             <?php foreach ($ville['besoins_detail'] as $bd): ?>
                                                 <tr style="background-color: #f8f9fa;">
                                                     <td style="padding: 0.4rem; font-size: 0.85rem;"><?= htmlspecialchars($bd['besoin']) ?></td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= $bd['quantite_par_sinistre'] ?></td>
+                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= $bd['quantite'] ?></td>
                                                     <td style="padding: 0.4rem; font-size: 0.85rem;"><?= number_format($bd['prix_unitaire'], 2) ?> Ar</td>
                                                     <td style="padding: 0.4rem; font-size: 0.85rem; font-weight: 600;"><?= number_format($bd['total_prix_besoin'], 2) ?> Ar</td>
                                                 </tr>

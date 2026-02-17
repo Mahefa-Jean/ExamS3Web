@@ -54,7 +54,8 @@ CREATE TABLE besoinVille(
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_ville INT,
     id_besoin INT NOT NULL,
-    quantite_par_sinistre INT NOT NULL,
+    quantite INT NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_ville) REFERENCES ville(id),
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 );
@@ -87,10 +88,12 @@ SELECT
     v.id as id_ville,
     v.nom as ville,
     v.nombre_sinistre,
+    b.id as id_besoin,
     b.nom as besoin,
     b.prix_unitaire,
-    bv.quantite_par_sinistre,
-    (v.nombre_sinistre * b.prix_unitaire * bv.quantite_par_sinistre) as total_prix_besoin
+    bv.quantite,
+    bv.date,
+    (b.prix_unitaire * bv.quantite) as total_prix_besoin
 FROM besoinVille bv
 JOIN ville v ON bv.id_ville = v.id
 JOIN besoin b ON bv.id_besoin = b.id;
@@ -100,4 +103,18 @@ SELECT
     id_ville,
     SUM(total_prix_besoin) as montant_total_besoin
 FROM V_besoin_ville_detail
-GROUP BY id_ville; 
+GROUP BY id_ville;
+
+CREATE OR REPLACE VIEW V_dons_restants AS
+SELECT 
+    b.id as id_besoin,
+    b.nom as besoin,
+    c.nom as categorie,
+    b.prix_unitaire,
+    COALESCE(SUM(d.quantite), 0) as quantite_restante
+FROM don d
+JOIN besoin b ON d.id_besoin = b.id
+JOIN categorie c ON b.id_categorie = c.id
+WHERE d.quantite > 0
+GROUP BY b.id, b.nom, c.nom, b.prix_unitaire
+HAVING quantite_restante > 0; 

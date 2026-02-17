@@ -75,10 +75,10 @@ class VilleController {
 
     public function createBesoinVille($id) {
         $id_besoin = Flight::request()->data->id_besoin;
-        $quantite_par_sinistre = Flight::request()->data->quantite_par_sinistre;
+        $quantite = Flight::request()->data->quantite;
 
         $BesoinVilleModel = new BesoinVille(Flight::db());
-        $BesoinVilleModel->createBesoinVille($id, $id_besoin, $quantite_par_sinistre);
+        $BesoinVilleModel->createBesoinVille($id, $id_besoin, $quantite);
 
         $this->besoins($id);
     }
@@ -105,10 +105,10 @@ class VilleController {
 
     public function updateBesoinVille($id_ville, $id) {
         $id_besoin = Flight::request()->data->id_besoin;
-        $quantite_par_sinistre = Flight::request()->data->quantite_par_sinistre;
+        $quantite = Flight::request()->data->quantite;
 
         $BesoinVilleModel = new BesoinVille(Flight::db());
-        $BesoinVilleModel->update($id, $id_besoin, $quantite_par_sinistre);
+        $BesoinVilleModel->update($id, $id_besoin, $quantite);
 
         $this->besoins($id_ville);
     }
