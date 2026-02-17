@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Villes - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -248,7 +248,7 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter une nouvelle ville</h2>
-            <form method="POST" action="/villes/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <form method="POST" action="<?= BASE_URL ?>/villes/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
                 <input type="text" name="nom" placeholder="Nom de la ville" required style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 <input type="number" name="nombre_sinistre" placeholder="Nombre de sinistres" required min="0" style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -276,9 +276,9 @@
                                 <td><?= htmlspecialchars($ville['nombre_sinistre']) ?></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #27ae60;">Besoins</a>
-                                        <a href="/villes/edit/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
-                                        <a href="/villes/delete/<?= $ville['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c;">Supprimer</a>
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #27ae60;">Besoins</a>
+                                        <a href="<?= BASE_URL ?>/villes/edit/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/villes/delete/<?= $ville['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c;">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -298,6 +298,6 @@
     <!-- Footer : ETU -->
     <?php include __DIR__ . '/footer.php'; ?>
 
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

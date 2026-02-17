@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier besoin - <?= htmlspecialchars($ville['nom']) ?> - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -212,7 +212,7 @@
         <div class="header">
             <h2>Modifier un besoin de : <?= htmlspecialchars($ville['nom']) ?></h2>
 
-            <form method="POST" action="/villes/besoins/<?= $ville['id'] ?>/update/<?= $besoinVille['id'] ?>">
+            <form method="POST" action="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/update/<?= $besoinVille['id'] ?>">
                 <div class="form-group">
                     <label for="id_besoin">Besoin</label>
                     <select name="id_besoin" id="id_besoin" required>
@@ -231,7 +231,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                    <a href="/villes/besoins/<?= $ville['id'] ?>" class="btn btn-back">Annuler</a>
+                    <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-back">Annuler</a>
                 </div>
             </form>
         </div>
@@ -243,6 +243,6 @@
     <!-- Footer -->
     <?php include __DIR__ . '/footer.php'; ?>
 
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Distribution - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -54,7 +54,7 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter une distribution</h2>
-            <form method="POST" action="/distributions/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
+            <form method="POST" action="<?= BASE_URL ?>/distributions/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
                 <select name="id_ville" required style="flex: 1;">
                     <option value="">-- Choisir une ville --</option>
                     <?php if (!empty($villes)): ?>
@@ -103,8 +103,8 @@
                                 <td><?= number_format($dist['montant_total'], 2) ?> Ar</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="/distributions/edit/<?= $dist['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
-                                        <a href="/distributions/delete/<?= $dist['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
+                                        <a href="<?= BASE_URL ?>/distributions/edit/<?= $dist['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/distributions/delete/<?= $dist['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -123,6 +123,6 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Besoins de <?= htmlspecialchars($ville['nom']) ?> - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -247,7 +247,7 @@
 
         <!-- Info ville -->
         <div class="header">
-            <a href="/villes" class="btn btn-back" style="margin-bottom: 1rem;">← Retour aux villes</a>
+            <a href="<?= BASE_URL ?>/villes" class="btn btn-back" style="margin-bottom: 1rem;">← Retour aux villes</a>
             <h2>Besoins de la ville : <?= htmlspecialchars($ville['nom']) ?></h2>
             <p>Nombre de sinistrés : <strong><?= htmlspecialchars($ville['nombre_sinistre']) ?></strong></p>
         </div>
@@ -255,7 +255,7 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter un besoin à cette ville</h2>
-            <form method="POST" action="/villes/besoins/<?= $ville['id'] ?>/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: flex-end;">
+            <form method="POST" action="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: flex-end;">
                 <div style="flex: 1;">
                     <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Besoin</label>
                     <select name="id_besoin" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
@@ -300,8 +300,8 @@
                                 <td><?= number_format($besoin['total_prix_besoin'], 2, ',', ' ') ?> Ar</td>
                                 <td>
                                     <div class="action-buttons" style="display: flex; gap: 0.5rem;">
-                                        <a href="/villes/besoins/<?= $ville['id'] ?>/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
-                                        <a href="/villes/besoins/<?= $ville['id'] ?>/delete/<?= $besoin['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/delete/<?= $besoin['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -325,6 +325,6 @@
     <!-- Footer : ETU -->
     <?php include __DIR__ . '/footer.php'; ?>
 
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

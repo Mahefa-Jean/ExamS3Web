@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Besoins - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -53,7 +53,7 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter un nouveau besoin</h2>
-            <form method="POST" action="/besoins/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <form method="POST" action="<?= BASE_URL ?>/besoins/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
                 <input type="text" name="nom" placeholder="Nom du besoin" required style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 <input type="number" name="prix_unitaire" placeholder="Prix unitaire" required min="0" step="0.01" style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -81,8 +81,8 @@
                                 <td><?= number_format($besoin['prix_unitaire'], 2) ?> Ar</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="/besoins/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
-                                        <a href="/besoins/delete/<?= $besoin['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
+                                        <a href="<?= BASE_URL ?>/besoins/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/besoins/delete/<?= $besoin['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -101,6 +101,6 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

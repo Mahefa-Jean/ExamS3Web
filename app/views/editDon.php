@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier Don - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -51,7 +51,7 @@
         <div class="container">
             <div class="header">
                 <h2>Modifier le don</h2>
-                <form method="POST" action="/dons/update/<?= $don['id'] ?>">
+                <form method="POST" action="<?= BASE_URL ?>/dons/update/<?= $don['id'] ?>">
                     <div class="form-group">
                         <label for="id_besoin">Besoin</label>
                         <select id="id_besoin" name="id_besoin" required>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
-                        <a href="/dons" class="btn btn-secondary">Annuler</a>
+                        <a href="<?= BASE_URL ?>/dons" class="btn btn-secondary">Annuler</a>
                     </div>
                 </form>
             </div>
@@ -75,6 +75,6 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

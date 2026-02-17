@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier Distribution - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -51,7 +51,7 @@
         <div class="container">
             <div class="header">
                 <h2>Modifier la distribution</h2>
-                <form method="POST" action="/distributions/update/<?= $distribution['id'] ?>">
+                <form method="POST" action="<?= BASE_URL ?>/distributions/update/<?= $distribution['id'] ?>">
                     <div class="form-group">
                         <label for="id_ville">Ville</label>
                         <select id="id_ville" name="id_ville" required>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
-                        <a href="/distributions" class="btn btn-secondary">Annuler</a>
+                        <a href="<?= BASE_URL ?>/distributions" class="btn btn-secondary">Annuler</a>
                     </div>
                 </form>
             </div>
@@ -83,6 +83,6 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

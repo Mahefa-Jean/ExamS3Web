@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dons - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -54,7 +54,7 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter un nouveau don</h2>
-            <form method="POST" action="/dons/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
+            <form method="POST" action="<?= BASE_URL ?>/dons/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
                 <select name="id_besoin" required style="flex: 1;">
                     <option value="">-- Choisir un besoin --</option>
                     <?php if (!empty($besoins)): ?>
@@ -91,8 +91,8 @@
                                 <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($don['date']))) ?></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="/dons/edit/<?= $don['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
-                                        <a href="/dons/delete/<?= $don['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
+                                        <a href="<?= BASE_URL ?>/dons/edit/<?= $don['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/dons/delete/<?= $don['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -111,6 +111,6 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>
