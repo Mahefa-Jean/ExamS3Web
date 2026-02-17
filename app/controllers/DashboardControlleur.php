@@ -159,6 +159,6 @@ class DashboardControlleur {
             }
         }
 
-        $this->app->redirect(BASE_URL . '/');
+        $this->app->redirect('/');
     }
 }
