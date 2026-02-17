@@ -24,11 +24,13 @@ CREATE TABLE besoin(
 
 CREATE TABLE achat(
     id INT PRIMARY KEY AUTO_INCREMENT,
+    id_ville INT,
     id_besoin INT NOT NULL,
     quantite INT NOT NULL,
     frais_pourcent DECIMAL(5, 2) NOT NULL DEFAULT 10.00,
     montant_total DECIMAL(10, 2) NOT NULL,
     date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_ville) REFERENCES ville(id),
     FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 );
 
@@ -117,4 +119,22 @@ JOIN besoin b ON d.id_besoin = b.id
 JOIN categorie c ON b.id_categorie = c.id
 WHERE d.quantite > 0
 GROUP BY b.id, b.nom, c.nom, b.prix_unitaire
-HAVING quantite_restante > 0; 
+HAVING quantite_restante > 0;
+
+CREATE OR REPLACE VIEW V_achat_detaillee AS
+SELECT 
+    a.id,
+    v.id as id_ville,
+    v.nom as ville,
+    b.nom as besoin,
+    c.nom as categorie,
+    a.quantite,
+    b.prix_unitaire,
+    (a.quantite * b.prix_unitaire) as sous_total,
+    a.frais_pourcent,
+    a.montant_total,
+    a.date
+FROM achat a
+JOIN besoin b ON a.id_besoin = b.id
+JOIN categorie c ON b.id_categorie = c.id
+LEFT JOIN ville v ON a.id_ville = v.id;

@@ -157,7 +157,7 @@ class DistributionController {
     /**
      * Affiche la page de dispatch : tous les besoins de toutes les villes + formulaire choix méthode
      */
-    public function dispatch($message = null, $message_type = null) {
+    public function dispatch($message = null, $message_type = null, $simulation_results = null, $methode_choisie = null) {
         $BesoinVilleModel = new BesoinVille(Flight::db());
         $DonModel = new Don(Flight::db());
 
@@ -168,8 +168,144 @@ class DistributionController {
             'besoins_villes' => $besoins_villes,
             'dons_restants' => $dons_restants,
             'message' => $message,
-            'message_type' => $message_type
+            'message_type' => $message_type,
+            'simulation_results' => $simulation_results,
+            'methode_choisie' => $methode_choisie
         ]);
+    }
+
+    /**
+     * Simuler le dispatch (affiche le résultat sans exécuter)
+     */
+    public function simulerDispatch() {
+        $methode = Flight::request()->data->methode;
+
+        $BesoinVilleModel = new BesoinVille(Flight::db());
+        $DonModel = new Don(Flight::db());
+
+        // Récupérer les besoins selon la méthode
+        switch ($methode) {
+            case 'date':
+                $besoins = $BesoinVilleModel->getAllBesoinsVilleDetailByDate();
+                break;
+            case 'quantite':
+                $besoins = $BesoinVilleModel->getAllBesoinsVilleDetailByQuantite();
+                break;
+            case 'proportionnel':
+                $besoins = $BesoinVilleModel->getAllBesoinsVilleDetailByDate();
+                break;
+            default:
+                $this->dispatch("Méthode de distribution invalide.", "danger");
+                return;
+        }
+
+        if (empty($besoins)) {
+            $this->dispatch("Aucun besoin à distribuer.", "danger");
+            return;
+        }
+
+        // Simuler sans modifier la base - copier les quantités de dons disponibles
+        $dons_copies = [];
+        foreach ($besoins as $b) {
+            if (!isset($dons_copies[$b['id_besoin']])) {
+                $dons_copies[$b['id_besoin']] = $DonModel->getQuantiteRestante($b['id_besoin']);
+            }
+        }
+
+        $simulation_results = [];
+
+        if ($methode === 'proportionnel') {
+            $besoins_par_type = [];
+            foreach ($besoins as $b) {
+                $besoins_par_type[$b['id_besoin']][] = $b;
+            }
+
+            foreach ($besoins_par_type as $id_besoin => $liste_besoins) {
+                $don_disponible = $dons_copies[$id_besoin] ?? 0;
+                if ($don_disponible <= 0) continue;
+
+                $total_demande = 0;
+                foreach ($liste_besoins as $b) {
+                    $total_demande += $b['quantite'];
+                }
+                if ($total_demande <= 0) continue;
+
+                // Étape 1 : partie entière de (quantite * donTotal / totalQuantites)
+                $attributions = [];
+                $somme_floors = 0;
+                foreach ($liste_besoins as $i => $b) {
+                    $valeur_exacte = $b['quantite'] * $don_disponible / $total_demande;
+                    $partie_entiere = (int) floor($valeur_exacte);
+                    $partie_decimale = $valeur_exacte - $partie_entiere;
+                    // Ne pas dépasser le besoin
+                    $partie_entiere = min($partie_entiere, $b['quantite']);
+                    $attributions[$i] = [
+                        'besoin' => $b,
+                        'quantite' => $partie_entiere,
+                        'decimale' => $partie_decimale
+                    ];
+                    $somme_floors += $partie_entiere;
+                }
+
+                // Étape 2 : distribuer le reste (+1) par ordre de décimale décroissante
+                $reste = $don_disponible - $somme_floors;
+                // Trier par décimale décroissante
+                $indices = array_keys($attributions);
+                usort($indices, function($a, $b) use ($attributions) {
+                    return $attributions[$b]['decimale'] <=> $attributions[$a]['decimale'];
+                });
+                foreach ($indices as $idx) {
+                    if ($reste <= 0) break;
+                    $max_possible = $attributions[$idx]['besoin']['quantite'] - $attributions[$idx]['quantite'];
+                    if ($max_possible > 0) {
+                        $attributions[$idx]['quantite'] += 1;
+                        $reste--;
+                    }
+                }
+
+                // Enregistrer les résultats de simulation
+                foreach ($attributions as $attr) {
+                    $qte = $attr['quantite'];
+                    if ($qte <= 0) continue;
+                    $b = $attr['besoin'];
+                    $simulation_results[] = [
+                        'ville' => $b['ville'],
+                        'besoin' => $b['besoin'],
+                        'quantite_demandee' => $b['quantite'],
+                        'quantite_distribuee' => $qte,
+                        'prix_unitaire' => $b['prix_unitaire'],
+                        'montant' => $qte * $b['prix_unitaire'],
+                        'reste' => $b['quantite'] - $qte
+                    ];
+                }
+            }
+        } else {
+            foreach ($besoins as $b) {
+                $don_disponible = $dons_copies[$b['id_besoin']] ?? 0;
+                if ($don_disponible <= 0) continue;
+
+                $quantite_a_distribuer = min($b['quantite'], $don_disponible);
+
+                $simulation_results[] = [
+                    'ville' => $b['ville'],
+                    'besoin' => $b['besoin'],
+                    'quantite_demandee' => $b['quantite'],
+                    'quantite_distribuee' => $quantite_a_distribuer,
+                    'prix_unitaire' => $b['prix_unitaire'],
+                    'montant' => $quantite_a_distribuer * $b['prix_unitaire'],
+                    'reste' => $b['quantite'] - $quantite_a_distribuer
+                ];
+                $dons_copies[$b['id_besoin']] -= $quantite_a_distribuer;
+            }
+        }
+
+        if (empty($simulation_results)) {
+            $this->dispatch("Aucune distribution possible. Vérifiez les dons restants.", "danger");
+            return;
+        }
+
+        $methode_label = $methode === 'date' ? 'Par ordre de date' : ($methode === 'quantite' ? 'Par plus petit quantité' : 'Proportionnel');
+        $this->dispatch("Simulation ($methode_label) : " . count($simulation_results) . " distribution(s) prévue(s).", "success", $simulation_results, $methode);
     }
 
     /**
@@ -206,8 +342,9 @@ class DistributionController {
         $nb_distributions = 0;
 
         if ($methode === 'proportionnel') {
-            // Méthode proportionnelle : on répartit les dons proportionnellement
-            // Pour chaque besoin (type), calculer le total demandé, puis répartir le don disponible
+            // Méthode proportionnelle :
+            // 1) partie entière de (quantite * donTotal / totalQuantites)
+            // 2) +1 par ordre de décimale décroissante jusqu'à épuisement du don
             $besoins_par_type = [];
             foreach ($besoins as $b) {
                 $besoins_par_type[$b['id_besoin']][] = $b;
@@ -221,23 +358,48 @@ class DistributionController {
                 foreach ($liste_besoins as $b) {
                     $total_demande += $b['quantite'];
                 }
+                if ($total_demande <= 0) continue;
 
-                foreach ($liste_besoins as $b) {
-                    if ($don_disponible <= 0) break;
+                // Étape 1 : partie entière
+                $attributions = [];
+                $somme_floors = 0;
+                foreach ($liste_besoins as $i => $b) {
+                    $valeur_exacte = $b['quantite'] * $don_disponible / $total_demande;
+                    $partie_entiere = (int) floor($valeur_exacte);
+                    $partie_decimale = $valeur_exacte - $partie_entiere;
+                    $partie_entiere = min($partie_entiere, $b['quantite']);
+                    $attributions[$i] = [
+                        'besoin' => $b,
+                        'quantite' => $partie_entiere,
+                        'decimale' => $partie_decimale
+                    ];
+                    $somme_floors += $partie_entiere;
+                }
 
-                    // Part proportionnelle
-                    $ratio = $b['quantite'] / $total_demande;
-                    $quantite_attribuee = (int) floor($don_disponible * $ratio);
-                    if ($quantite_attribuee <= 0) continue;
+                // Étape 2 : distribuer le reste (+1) par ordre de décimale décroissante
+                $reste = $don_disponible - $somme_floors;
+                $indices = array_keys($attributions);
+                usort($indices, function($a, $b) use ($attributions) {
+                    return $attributions[$b]['decimale'] <=> $attributions[$a]['decimale'];
+                });
+                foreach ($indices as $idx) {
+                    if ($reste <= 0) break;
+                    $max_possible = $attributions[$idx]['besoin']['quantite'] - $attributions[$idx]['quantite'];
+                    if ($max_possible > 0) {
+                        $attributions[$idx]['quantite'] += 1;
+                        $reste--;
+                    }
+                }
 
-                    // Ne pas dépasser le besoin
-                    $quantite_a_distribuer = min($quantite_attribuee, $b['quantite']);
+                // Exécuter les distributions
+                foreach ($attributions as $attr) {
+                    $qte = $attr['quantite'];
+                    if ($qte <= 0) continue;
+                    $b = $attr['besoin'];
 
-                    // Créer la distribution
-                    $DistributionModel->createDistribution($b['id_ville'], $b['id_besoin'], $quantite_a_distribuer);
-                    $DonModel->diminuerQuantite($b['id_besoin'], $quantite_a_distribuer);
-                    $BesoinVilleModel->diminuerQuantite($b['id'], $quantite_a_distribuer);
-                    $don_disponible -= $quantite_a_distribuer;
+                    $DistributionModel->createDistribution($b['id_ville'], $b['id_besoin'], $qte);
+                    $DonModel->diminuerQuantite($b['id_besoin'], $qte);
+                    $BesoinVilleModel->diminuerQuantite($b['id'], $qte);
                     $nb_distributions++;
                 }
             }

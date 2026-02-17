@@ -70,6 +70,7 @@ $router->group('', function(Router $router) use ($app) {
 
 	// Dispatch
 	$router->get('/dispatch',[$DistributionController,'dispatch']);
+	$router->post('/dispatch/simuler',[$DistributionController,'simulerDispatch']);
 	$router->post('/dispatch/executer',[$DistributionController,'executerDispatch']);
 
 	// Achats
@@ -77,6 +78,9 @@ $router->group('', function(Router $router) use ($app) {
 	$router->post('/achats/simuler',[$AchatController,'simuler']);
 	$router->post('/achats/valider',[$AchatController,'valider']);
 	$router->get('/achats/delete/@id',[$AchatController,'delete']);
+
+	// Réinitialisation
+	$router->get('/reinitialiser',[$DashboardControlleur,'reinitialiser']);
 
 
 	// $router->get('/benefice',[$controller,'benefice']);

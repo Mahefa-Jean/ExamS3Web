@@ -96,18 +96,63 @@
 
         <!-- Formulaire de dispatch -->
         <div class="header">
-            <h2>🚀 Lancer le dispatch automatique</h2>
-            <p style="color: #7f8c8d; margin-bottom: 1rem;">Choisissez une méthode de distribution puis cliquez sur "Exécuter" pour distribuer automatiquement les dons aux villes selon leurs besoins.</p>
-            <form method="POST" action="<?= BASE_URL ?>/dispatch/executer" class="dispatch-form">
+            <h2>🚀 Simuler le dispatch automatique</h2>
+            <p style="color: #7f8c8d; margin-bottom: 1rem;">Choisissez une méthode de distribution puis cliquez sur "Simuler" pour voir le résultat. Vous pourrez ensuite valider pour exécuter réellement le dispatch.</p>
+            <form method="POST" action="<?= BASE_URL ?>/dispatch/simuler" class="dispatch-form">
                 <select name="methode" required>
                     <option value="">-- Choisir une méthode --</option>
-                    <option value="date">📅 Par ordre de date de saisie</option>
-                    <option value="quantite">📊 Par le plus petit quantité d'abord</option>
-                    <option value="proportionnel">⚖️ Proportionnel</option>
+                    <option value="date" <?= (isset($methode_choisie) && $methode_choisie === 'date') ? 'selected' : '' ?>>📅 Par ordre de date de saisie</option>
+                    <option value="quantite" <?= (isset($methode_choisie) && $methode_choisie === 'quantite') ? 'selected' : '' ?>>📊 Par le plus petit quantité d'abord</option>
+                    <option value="proportionnel" <?= (isset($methode_choisie) && $methode_choisie === 'proportionnel') ? 'selected' : '' ?>>⚖️ Proportionnel</option>
                 </select>
-                <button type="submit" class="btn btn-success" onclick="return confirm('Êtes-vous sûr de vouloir exécuter le dispatch ? Cette action va créer les distributions automatiquement.');">🚀 Exécuter le dispatch</button>
+                <button type="submit" class="btn btn-primary">🔍 Simuler</button>
             </form>
         </div>
+
+        <!-- Résultat de simulation -->
+        <?php if (!empty($simulation_results)): ?>
+            <div class="header" style="border: 2px solid #3498db;">
+                <h2>📋 Résultat de la simulation</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ville</th>
+                            <th>Besoin</th>
+                            <th>Qté demandée</th>
+                            <th>Qté distribuée</th>
+                            <th>Reste</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $total_montant = 0;
+                        foreach ($simulation_results as $sim): 
+                            $total_montant += $sim['montant'];
+                        ?>
+                            <tr>
+                                <td><?= htmlspecialchars($sim['ville']) ?></td>
+                                <td><?= htmlspecialchars($sim['besoin']) ?></td>
+                                <td><?= $sim['quantite_demandee'] ?></td>
+                                <td style="color: #27ae60; font-weight: 600;"><?= $sim['quantite_distribuee'] ?></td>
+                                <td style="color: <?= $sim['reste'] > 0 ? '#e74c3c' : '#27ae60' ?>; font-weight: 600;"><?= $sim['reste'] ?></td>
+                                <td><?= number_format($sim['montant'], 2) ?> Ar</td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr style="background-color: #f8f9fa; font-weight: 700;">
+                            <td colspan="5" style="text-align: right;">Total :</td>
+                            <td><?= number_format($total_montant, 2) ?> Ar</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Bouton Valider -->
+                <form method="POST" action="<?= BASE_URL ?>/dispatch/executer" style="margin-top: 1.5rem;">
+                    <input type="hidden" name="methode" value="<?= htmlspecialchars($methode_choisie) ?>">
+                    <button type="submit" class="btn btn-success" style="width: 100%; padding: 0.8rem; font-size: 1rem;" onclick="return confirm('Confirmer le dispatch ? Les distributions seront créées et les besoins mis à jour.');">✅ Valider le dispatch</button>
+                </form>
+            </div>
+        <?php endif; ?>
 
         <!-- Tableau des besoins de toutes les villes -->
         <div class="header">

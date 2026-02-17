@@ -66,6 +66,19 @@ class BesoinVille {
     }
 
     /**
+     * Besoins ville nature/materiaux uniquement (pour les achats)
+     */
+    public function getBesoinsVilleAchetables() {
+        $sql = "SELECT bv.* FROM V_besoin_ville_detail bv
+                JOIN besoin b ON bv.id_besoin = b.id
+                JOIN categorie c ON b.id_categorie = c.id
+                WHERE c.nom IN ('nature', 'materiaux')
+                ORDER BY bv.date ASC";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Tous les besoins ville triés par quantité ASC (plus petit d'abord)
      */
     public function getAllBesoinsVilleDetailByQuantite() {

@@ -9,5 +9,6 @@
         <li><a href="<?= BASE_URL ?>/distributions" class="site-menu__link <?= ($currentPage ?? '') === 'distribution' ? 'active' : '' ?>">Distribution</a></li>
         <li><a href="<?= BASE_URL ?>/achats" class="site-menu__link <?= ($currentPage ?? '') === 'achats' ? 'active' : '' ?>">Achats</a></li>
         <li><a href="<?= BASE_URL ?>/recapitulatif" class="site-menu__link <?= ($currentPage ?? '') === 'recapitulatif' ? 'active' : '' ?>">Récapitulation</a></li>
+        <li><a href="<?= BASE_URL ?>/reinitialiser" class="site-menu__link" style="background-color:#e74c3c; color:#fff; text-align:center; border-radius:4px; margin-top:10px;" onclick="return confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ?')">Réinitialiser</a></li>
     </ul>
 </nav>

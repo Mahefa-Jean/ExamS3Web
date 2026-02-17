@@ -15,19 +15,19 @@ class Achat {
     }
 
     public function getAllAchats() {
-        $sql = "SELECT a.id, b.nom as besoin, c.nom as categorie,
-                       a.quantite, a.frais_pourcent, b.prix_unitaire,
-                       (a.quantite * b.prix_unitaire) as sous_total,
-                       a.montant_total, a.date
-                FROM achat a 
-                JOIN besoin b ON a.id_besoin = b.id 
-                JOIN categorie c ON b.id_categorie = c.id
-                ORDER BY a.date DESC";
+        $sql = "SELECT * FROM V_achat_detaillee ORDER BY date DESC";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createAchat($id_besoin, $quantite, $frais_pourcent) {
+    public function getAchatsByVille($id_ville) {
+        $sql = "SELECT * FROM V_achat_detaillee WHERE id_ville = :id_ville ORDER BY date DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_ville' => $id_ville]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createAchat($id_ville, $id_besoin, $quantite, $frais_pourcent) {
         // Calculer le montant total avec frais
         $besoinStmt = $this->db->prepare("SELECT prix_unitaire FROM besoin WHERE id = :id");
         $besoinStmt->execute([':id' => $id_besoin]);
@@ -36,10 +36,11 @@ class Achat {
         $sous_total = $quantite * $besoin['prix_unitaire'];
         $montant_total = $sous_total * (1 + $frais_pourcent / 100);
 
-        $sql = "INSERT INTO achat (id_besoin, quantite, frais_pourcent, montant_total, date) 
-                VALUES (:id_besoin, :quantite, :frais_pourcent, :montant_total, NOW())";
+        $sql = "INSERT INTO achat (id_ville, id_besoin, quantite, frais_pourcent, montant_total, date) 
+                VALUES (:id_ville, :id_besoin, :quantite, :frais_pourcent, :montant_total, NOW())";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
+            ':id_ville' => $id_ville,
             ':id_besoin' => $id_besoin, 
             ':quantite' => $quantite, 
             ':frais_pourcent' => $frais_pourcent,
@@ -107,10 +108,14 @@ class Achat {
     /**
      * Simuler un achat (retourne les détails sans enregistrer)
      */
-    public function simulerAchat($id_besoin, $quantite, $frais_pourcent) {
-        $besoinStmt = $this->db->prepare("SELECT * FROM besoin WHERE id = :id");
+    public function simulerAchat($id_ville, $id_besoin, $quantite, $frais_pourcent) {
+        $besoinStmt = $this->db->prepare("SELECT b.*, c.nom as categorie FROM besoin b JOIN categorie c ON b.id_categorie = c.id WHERE b.id = :id");
         $besoinStmt->execute([':id' => $id_besoin]);
         $besoin = $besoinStmt->fetch(PDO::FETCH_ASSOC);
+
+        $villeStmt = $this->db->prepare("SELECT * FROM ville WHERE id = :id");
+        $villeStmt->execute([':id' => $id_ville]);
+        $ville = $villeStmt->fetch(PDO::FETCH_ASSOC);
 
         $sous_total = $quantite * $besoin['prix_unitaire'];
         $frais = $sous_total * ($frais_pourcent / 100);
@@ -119,6 +124,7 @@ class Achat {
 
         return [
             'besoin' => $besoin,
+            'ville' => $ville,
             'quantite' => $quantite,
             'prix_unitaire' => $besoin['prix_unitaire'],
             'sous_total' => $sous_total,

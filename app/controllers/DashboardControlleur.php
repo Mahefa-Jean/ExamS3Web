@@ -114,4 +114,51 @@ class DashboardControlleur {
     public function recapitulatif() {
         $this->app->render('recapitulatif');
     }
+
+    /**
+     * Réinitialiser la base de données avec les données de data.sql
+     */
+    public function reinitialiser() {
+        $db = Flight::db();
+
+        // Désactiver les contraintes de clés étrangères pour pouvoir TRUNCATE
+        $db->exec('SET FOREIGN_KEY_CHECKS = 0');
+
+        // Vider toutes les tables (TRUNCATE remet l'auto-increment à 1)
+        $db->exec('TRUNCATE TABLE distribution');
+        $db->exec('TRUNCATE TABLE achat');
+        $db->exec('TRUNCATE TABLE besoinVille');
+        $db->exec('TRUNCATE TABLE don');
+        $db->exec('TRUNCATE TABLE besoin');
+        $db->exec('TRUNCATE TABLE ville');
+
+        // Réactiver les contraintes
+        $db->exec('SET FOREIGN_KEY_CHECKS = 1');
+
+        // Lire et exécuter data.sql
+        $dataFile = __DIR__ . '/../../data.sql';
+        $sql = file_get_contents($dataFile);
+
+        // Supprimer les commentaires SQL (lignes commençant par --)
+        $lines = explode("\n", $sql);
+        $cleanLines = [];
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if ($trimmed !== '' && strpos($trimmed, '--') !== 0) {
+                $cleanLines[] = $line;
+            }
+        }
+        $cleanSql = implode("\n", $cleanLines);
+
+        // Exécuter chaque requête séparément
+        $statements = explode(';', $cleanSql);
+        foreach ($statements as $statement) {
+            $statement = trim($statement);
+            if (!empty($statement)) {
+                $db->exec($statement);
+            }
+        }
+
+        $this->app->redirect(BASE_URL . '/');
+    }
 }
