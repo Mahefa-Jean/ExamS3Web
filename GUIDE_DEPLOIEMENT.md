@@ -197,7 +197,7 @@ SELECT COUNT(*) FROM dons;
 
 ```bash
 cd /opt/lampp/htdocs/ExamS3Web
-php -S localhost:8000 -t public
+Œ
 ```
 
 Le serveur démarre sur **`http://localhost:8000`**
