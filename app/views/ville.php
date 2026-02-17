@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Villes - BNGRC</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -238,113 +238,59 @@
 
     <div class="site-wrapper">
         <!-- Menu : sidebar à gauche -->
-        <?php $currentPage = 'dashboard'; ?>
+        <?php $currentPage = 'villes'; ?>
         <?php include __DIR__ . '/menu.php'; ?>
 
         <!-- Contenu : liste de villes -->
         <div class="main-content">
         <div class="container">
 
-        <!-- Statistiques -->
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Nombre de villes</h3>
-                <div class="value"><?= count($villes) ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Total sinistrés</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_sinistre')) ?></div>
-            </div>
+        <!-- Formulaire d'ajout -->
+        <div class="header">
+            <h2>Ajouter une nouvelle ville</h2>
+            <form method="POST" action="<?= BASE_URL ?>/villes/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <input type="text" name="nom" placeholder="Nom de la ville" required style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                <input type="number" name="nombre_sinistre" placeholder="Nombre de sinistres" required min="0" style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+            </form>
         </div>
 
         <!-- Tableau des villes -->
-        <h2>Tableau de bord — Villes, Besoins et Dons</h2>
-        <table>
-            <thead>
-                <tr>
-<<<<<<< HEAD
-                    <th>Nom de la ville</th>
-                    <th>Nombre de sinistrés</th>
-                    <th>Actions</th>
-=======
-                    <th>Ville</th>
-                    <th>Sinistrés</th>
-                    <th>Besoins (montant)</th>
-                    <th>Dons distribués (montant)</th>
-                    <th>Reste à couvrir</th>
-                    <th>Statut</th>
-                    <th>Détails</th>
->>>>>>> origin/backend
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($villes)): ?>
-                    <?php foreach ($villes as $ville): ?>
-                        <?php $reste = $ville['besoin'] - $ville['don']; ?>
-                        <?php $taux = $ville['besoin'] > 0 ? ($ville['don'] / $ville['besoin'] * 100) : 0; ?>
-                        <tr>
-<<<<<<< HEAD
-                            <td><?= htmlspecialchars($ville['nom']) ?></td>
-                            <td><?= $ville['nombre_sinistre'] ?></td>
-                            <td class="action-buttons">
-                                <a href="/besoins/ville/<?= $ville['id'] ?>" class="btn btn-primary">Voir les besoins</a>
-=======
-                            <td><strong><?= htmlspecialchars($ville['nom']) ?></strong></td>
-                            <td><?= htmlspecialchars($ville['nombre_sinistre']) ?></td>
-                            <td><?= number_format($ville['besoin'], 2) ?> Ar</td>
-                            <td><?= number_format($ville['don'], 2) ?> Ar</td>
-                            <td style="color: <?= $reste <= 0 ? '#27ae60' : '#e74c3c' ?>; font-weight: 600;">
-                                <?= number_format(max($reste, 0), 2) ?> Ar
-                            </td>
-                            <td>
-                                <?php if ($taux >= 100): ?>
-                                    <span style="background-color: #d5f5e3; color: #1e8449; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✅ Couverte</span>
-                                <?php elseif ($taux >= 50): ?>
-                                    <span style="background-color: #fef9e7; color: #b7950b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">⚠️ Partielle (<?= number_format($taux, 0) ?>%)</span>
-                                <?php else: ?>
-                                    <span style="background-color: #fce4e4; color: #c0392b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">❌ Non couverte (<?= number_format($taux, 0) ?>%)</span>
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Voir besoins</a>
->>>>>>> origin/backend
-                            </td>
-                        </tr>
-                        <!-- Détail des besoins de cette ville -->
-                        <?php if (!empty($ville['besoins_detail'])): ?>
+        <div class="header">
+            <h2>Liste des villes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom de la ville</th>
+                        <th>Nombre de sinistres</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($villes)): ?>
+                        <?php foreach ($villes as $ville): ?>
                             <tr>
-                                <td colspan="7" style="padding: 0.5rem 2rem; background-color: #f8f9fa;">
-                                    <table style="width: 100%; box-shadow: none; margin: 0;">
-                                        <thead style="background-color: #7f8c8d;">
-                                            <tr>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Besoin</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Qté/sinistré</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Prix unitaire</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($ville['besoins_detail'] as $bd): ?>
-                                                <tr style="background-color: #f8f9fa;">
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= htmlspecialchars($bd['besoin']) ?></td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= $bd['quantite_par_sinistre'] ?></td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= number_format($bd['prix_unitaire'], 2) ?> Ar</td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem; font-weight: 600;"><?= number_format($bd['total_prix_besoin'], 2) ?> Ar</td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                <td><?= htmlspecialchars($ville['id']) ?></td>
+                                <td><?= htmlspecialchars($ville['nom']) ?></td>
+                                <td><?= htmlspecialchars($ville['nombre_sinistre']) ?></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #27ae60;">Besoins</a>
+                                        <a href="<?= BASE_URL ?>/villes/edit/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/villes/delete/<?= $ville['id'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c;">Supprimer</a>
+                                    </div>
                                 </td>
                             </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="7" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     </div><!-- /main-content -->
     </div><!-- /site-wrapper -->
@@ -352,6 +298,6 @@
     <!-- Footer : ETU -->
     <?php include __DIR__ . '/footer.php'; ?>
 
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BNGRC</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Besoins de <?= htmlspecialchars($ville['nom']) ?> - BNGRC</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -162,10 +162,6 @@
         tbody tr:hover {
             background-color: #f9f9f9;
         }
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
 
         /* ── Boutons ── */
         .btn {
@@ -185,6 +181,13 @@
         }
         .btn-primary:hover {
             background-color: #2980b9;
+        }
+        .btn-back {
+            background-color: #95a5a6;
+            color: white;
+        }
+        .btn-back:hover {
+            background-color: #7f8c8d;
         }
 
         /* ── Footer ── */
@@ -225,9 +228,6 @@
             .stats {
                 grid-template-columns: 1fr;
             }
-            .action-buttons {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
@@ -238,113 +238,86 @@
 
     <div class="site-wrapper">
         <!-- Menu : sidebar à gauche -->
-        <?php $currentPage = 'dashboard'; ?>
+        <?php $currentPage = 'villes'; ?>
         <?php include __DIR__ . '/menu.php'; ?>
 
-        <!-- Contenu : liste de villes -->
+        <!-- Contenu : besoins de la ville -->
         <div class="main-content">
         <div class="container">
 
-        <!-- Statistiques -->
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Nombre de villes</h3>
-                <div class="value"><?= count($villes) ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Total sinistrés</h3>
-                <div class="value"><?= array_sum(array_column($villes, 'nombre_sinistre')) ?></div>
-            </div>
+        <!-- Info ville -->
+        <div class="header">
+            <a href="<?= BASE_URL ?>/villes" class="btn btn-back" style="margin-bottom: 1rem;">← Retour aux villes</a>
+            <h2>Besoins de la ville : <?= htmlspecialchars($ville['nom']) ?></h2>
+            <p>Nombre de sinistrés : <strong><?= htmlspecialchars($ville['nombre_sinistre']) ?></strong></p>
         </div>
 
-        <!-- Tableau des villes -->
-        <h2>Tableau de bord — Villes, Besoins et Dons</h2>
-        <table>
-            <thead>
-                <tr>
-<<<<<<< HEAD
-                    <th>Nom de la ville</th>
-                    <th>Nombre de sinistrés</th>
-                    <th>Actions</th>
-=======
-                    <th>Ville</th>
-                    <th>Sinistrés</th>
-                    <th>Besoins (montant)</th>
-                    <th>Dons distribués (montant)</th>
-                    <th>Reste à couvrir</th>
-                    <th>Statut</th>
-                    <th>Détails</th>
->>>>>>> origin/backend
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($villes)): ?>
-                    <?php foreach ($villes as $ville): ?>
-                        <?php $reste = $ville['besoin'] - $ville['don']; ?>
-                        <?php $taux = $ville['besoin'] > 0 ? ($ville['don'] / $ville['besoin'] * 100) : 0; ?>
-                        <tr>
-<<<<<<< HEAD
-                            <td><?= htmlspecialchars($ville['nom']) ?></td>
-                            <td><?= $ville['nombre_sinistre'] ?></td>
-                            <td class="action-buttons">
-                                <a href="/besoins/ville/<?= $ville['id'] ?>" class="btn btn-primary">Voir les besoins</a>
-=======
-                            <td><strong><?= htmlspecialchars($ville['nom']) ?></strong></td>
-                            <td><?= htmlspecialchars($ville['nombre_sinistre']) ?></td>
-                            <td><?= number_format($ville['besoin'], 2) ?> Ar</td>
-                            <td><?= number_format($ville['don'], 2) ?> Ar</td>
-                            <td style="color: <?= $reste <= 0 ? '#27ae60' : '#e74c3c' ?>; font-weight: 600;">
-                                <?= number_format(max($reste, 0), 2) ?> Ar
-                            </td>
-                            <td>
-                                <?php if ($taux >= 100): ?>
-                                    <span style="background-color: #d5f5e3; color: #1e8449; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✅ Couverte</span>
-                                <?php elseif ($taux >= 50): ?>
-                                    <span style="background-color: #fef9e7; color: #b7950b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">⚠️ Partielle (<?= number_format($taux, 0) ?>%)</span>
-                                <?php else: ?>
-                                    <span style="background-color: #fce4e4; color: #c0392b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">❌ Non couverte (<?= number_format($taux, 0) ?>%)</span>
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Voir besoins</a>
->>>>>>> origin/backend
-                            </td>
-                        </tr>
-                        <!-- Détail des besoins de cette ville -->
-                        <?php if (!empty($ville['besoins_detail'])): ?>
+        <!-- Formulaire d'ajout -->
+        <div class="header">
+            <h2>Ajouter un besoin à cette ville</h2>
+            <form method="POST" action="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: flex-end;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Besoin</label>
+                    <select name="id_besoin" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="">-- Choisir un besoin --</option>
+                        <?php foreach ($allBesoins as $b): ?>
+                            <option value="<?= $b['id'] ?>"><?= htmlspecialchars($b['nom']) ?> (<?= number_format($b['prix_unitaire'], 2, ',', ' ') ?> Ar)</option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div style="flex: 0.5;">
+                    <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Quantité par sinistré</label>
+                    <input type="number" name="quantite_par_sinistre" placeholder="Quantité" required min="1" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+            </form>
+        </div>
+
+        <!-- Tableau des besoins -->
+        <div class="header">
+            <h2>Liste des besoins</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Besoin</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité par sinistré</th>
+                        <th>Total prix besoin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($besoins)): ?>
+                        <?php 
+                            $totalGeneral = 0;
+                            foreach ($besoins as $besoin): 
+                                $totalGeneral += $besoin['total_prix_besoin'];
+                        ?>
                             <tr>
-                                <td colspan="7" style="padding: 0.5rem 2rem; background-color: #f8f9fa;">
-                                    <table style="width: 100%; box-shadow: none; margin: 0;">
-                                        <thead style="background-color: #7f8c8d;">
-                                            <tr>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Besoin</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Qté/sinistré</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Prix unitaire</th>
-                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($ville['besoins_detail'] as $bd): ?>
-                                                <tr style="background-color: #f8f9fa;">
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= htmlspecialchars($bd['besoin']) ?></td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= $bd['quantite_par_sinistre'] ?></td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= number_format($bd['prix_unitaire'], 2) ?> Ar</td>
-                                                    <td style="padding: 0.4rem; font-size: 0.85rem; font-weight: 600;"><?= number_format($bd['total_prix_besoin'], 2) ?> Ar</td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                <td><?= htmlspecialchars($besoin['besoin']) ?></td>
+                                <td><?= number_format($besoin['prix_unitaire'], 2, ',', ' ') ?> Ar</td>
+                                <td><?= htmlspecialchars($besoin['quantite_par_sinistre']) ?></td>
+                                <td><?= number_format($besoin['total_prix_besoin'], 2, ',', ' ') ?> Ar</td>
+                                <td>
+                                    <div class="action-buttons" style="display: flex; gap: 0.5rem;">
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
+                                        <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>/delete/<?= $besoin['id'] ?>" class="btn" onclick="return confirm('Êtes-vous sûr ?');" style="font-size: 0.8rem; padding: 0.5rem 0.8rem; background-color: #e74c3c; color: white;">Supprimer</a>
+                                    </div>
                                 </td>
                             </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="7" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                        <?php endforeach; ?>
+                        <tr style="background-color: #eaf2f8; font-weight: bold;">
+                            <td colspan="4" style="text-align: right;">Total général :</td>
+                            <td><?= number_format($totalGeneral, 2, ',', ' ') ?> Ar</td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #7f8c8d;">Aucun besoin enregistré pour cette ville</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     </div><!-- /main-content -->
     </div><!-- /site-wrapper -->
@@ -352,6 +325,6 @@
     <!-- Footer : ETU -->
     <?php include __DIR__ . '/footer.php'; ?>
 
-    <script src="/assets/js/script.js"></script>
+    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 </body>
 </html>

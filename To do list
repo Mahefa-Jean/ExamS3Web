@@ -16,5 +16,37 @@
                    getDonOneVille(idville) (ok)
                    getBesoinOneVille(idville) 
 
+<<<<<<< HEAD
         Controlleur : DashboardControlleur
         View : dashboard.php
+=======
+        Controlleur : DashboardControlleur (ok)
+        View : dashboard.php
+
+2 - CRUD :
+        Ville :
+                Base : ville (ok)
+                Model : ville (ok)
+                Fonction : getAllVille() (ok)
+                           delete(idVille)
+                           update($ville)
+                           add($ville)
+                Controlleur : VilleController.php (ok)
+                View : ville.php : afficher (ok)
+                                   ajouter (ok)
+                                   supprimer (ok)
+                                   modifier  (ok)
+
+        Besoin , Don , Distribution
+
+v2 - 
+
+1 - Achat des besoins en nature et en materiaux :
+
+        Base : besoin : ajouter une categorie 
+               achatBesoin : idBesoin , quantite  
+        Model :
+        Fonction :
+        Controlleur :
+        View :
+>>>>>>> origin/backend
