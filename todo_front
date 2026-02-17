@@ -54,3 +54,54 @@ Vue globale :
    -Reste à couvrir
 
 Note: Au cas ou page Login
+
+
+Besoins
+
+Ville                Date            Ordre         Categorie         Libelle      Prix Unitaire   Quantite
+Toamasina         2026-02-16          17            nature           Riz(kg)          3000          800
+Toamasina         2026-02-15          4             nature           Eau(L)           1000          1500
+Toamasina         2026-02-16          23            matériel         Tole             25000          120
+Toamasina         2026-02-15          1             matériel         Bache            15000         200
+Toamasina         2026-02-16          12            argent           Argent             1           12000000
+Mananjary         2026-02-15          9             nature           Riz(kg)           3000         500
+Mananjary         2026-02-16          25            nature           Huile(L)          6000         120
+Mananjary         2026-02-15          6             matériel         Tole              25000         80
+Mananjary         2026-02-16          19            matériel         Clous             8000          60
+Mananjary         2026-02-15           3            argent           Argent            1             6000000
+Farafangana       2026-02-16          21            nature           Riz(kg)           3000          600
+Farafangana        2026-02-15         14            nature           Eau(L)           1000           1000
+Farafangana        2026-02-16         8             matériel         Bache            15000          150
+Farafangana        2026-02-15         26            matériel         Bois             10000          100
+Farafangana         2026-02-16        10            argent           Argent            1             8000000
+Nosy Be             2026-02-15        5             nature           Riz(kg)          3000           300
+Nosy Be             2026-02-16        18            nature          Haricots          4000           200
+Nosy Be             2026-02-15        2             matériel        Tole              25000          40
+Nosy Be             2026-02-16        24            matériel        Clous             8000           30
+Nosy Be             2026-02-15        7             argent          Argent            1              4000000
+Morondava           2026-02-16        11            nature          Riz(kg)           3000           700
+Morondava           2026-02-15        20            nature          Eau(L)            1000           1200
+Morondava           2026-02-16        15            matériel        Bache             1000           180
+Morondava           2026-02-15        22            matériel        Bois              10000          150
+Morondava           2026-02-16        13            argent          Argent             1            10000000
+Toamasina           2026-02-15        16            matériel        groupe            6750000         3
+
+DONS
+
+Date               type_don          Libelle       Quantite
+2026-02-16          argent           Argent        5000000
+2026-02-16          argent           Argent        3000000
+2026-02-17          argent           Argent        4000000
+2026-02-17          argent           Argent        1500000
+2026-02-17          argent           Argent        6000000
+2026-02-16          argent           Argent          400
+2026-02-16          nature           Riz(kg)         600
+2026-02-17          nature           Eau(L)          50
+2026-02-17          matériel         Tole            70
+2026-02-17          matériel         Bache           100
+2026-02-18          nature           Riz(kg)         2000
+2026-02-18          matériel         Tole            300
+2026-02-18          nature           Eau(L)          5000
+2026-02-19          argent           Argent       2000000
+2026-02-19          materiel         Bache           500
+2026-02-17          nature           Haricots        88
