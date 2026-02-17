@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\model\Besoin;
+use app\model\Categorie;
 
 use Flight;
 use flight\Engine;
@@ -15,16 +16,19 @@ class BesoinController {
 
     public function liste(){
         $BesoinModel = new Besoin(Flight::db());
+        $CategorieModel = new Categorie(Flight::db());
         $besoins = $BesoinModel->getAllBesoins();
-        $this->app->render('besoin', ['besoins' => $besoins]);
+        $categories = $CategorieModel->getAllCategories();
+        $this->app->render('besoin', ['besoins' => $besoins, 'categories' => $categories]);
     }
 
     public function create() {
         $nom = Flight::request()->data->nom;
         $prix_unitaire = Flight::request()->data->prix_unitaire;
+        $id_categorie = Flight::request()->data->id_categorie ?? 1;
 
         $BesoinModel = new Besoin(Flight::db());
-        $BesoinModel->createBesoin($nom, $prix_unitaire);
+        $BesoinModel->createBesoin($nom, $prix_unitaire, $id_categorie);
 
         $this->liste();
     }
@@ -38,16 +42,19 @@ class BesoinController {
 
     public function edit($id) {
         $BesoinModel = new Besoin(Flight::db());
+        $CategorieModel = new Categorie(Flight::db());
         $besoin = $BesoinModel->getById($id);
-        $this->app->render('editBesoin', ['besoin' => $besoin]);
+        $categories = $CategorieModel->getAllCategories();
+        $this->app->render('editBesoin', ['besoin' => $besoin, 'categories' => $categories]);
     }
 
     public function update($id) {
         $nom = Flight::request()->data->nom;
         $prix_unitaire = Flight::request()->data->prix_unitaire;
+        $id_categorie = Flight::request()->data->id_categorie ?? 1;
 
         $BesoinModel = new Besoin(Flight::db());
-        $BesoinModel->update($id, $nom, $prix_unitaire);
+        $BesoinModel->update($id, $nom, $prix_unitaire, $id_categorie);
 
         $this->liste();
     }

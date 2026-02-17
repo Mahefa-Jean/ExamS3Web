@@ -5,6 +5,7 @@ use app\controllers\VilleController;
 use app\controllers\BesoinController;
 use app\controllers\DonController;
 use app\controllers\DistributionController;
+use app\controllers\AchatController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -22,9 +23,14 @@ $router->group('', function(Router $router) use ($app) {
 	$BesoinController = new BesoinController($app);
 	$DonController = new DonController($app);
 	$DistributionController = new DistributionController($app);
+	$AchatController = new AchatController($app);
 
 	// Dashboard
 	$router->get('/',[$DashboardControlleur,'dashboard']);
+
+	// Récapitulation
+	$router->get('/recapitulatif',[$DashboardControlleur,'recapitulatif']);
+	$router->get('/recapitulatif/data',[$DashboardControlleur,'recapitulatifData']);
 
 	// Villes
 	$router->get('/villes',[$VilleController,'liste']);
@@ -47,6 +53,7 @@ $router->group('', function(Router $router) use ($app) {
 
 	// Dons
 	$router->get('/dons',[$DonController,'liste']);
+	$router->get('/dons/restants',[$DonController,'restants']);
 	$router->get('/dons/edit/@id',[$DonController,'edit']);
 	$router->post('/dons/update/@id',[$DonController,'update']);
 	$router->get('/dons/delete/@id',[$DonController,'delete']);
@@ -54,10 +61,18 @@ $router->group('', function(Router $router) use ($app) {
 
 	// Distributions
 	$router->get('/distributions',[$DistributionController,'liste']);
+	$router->post('/distributions/simuler',[$DistributionController,'simuler']);
+	$router->post('/distributions/valider',[$DistributionController,'create']);
 	$router->get('/distributions/edit/@id',[$DistributionController,'edit']);
 	$router->post('/distributions/update/@id',[$DistributionController,'update']);
 	$router->get('/distributions/delete/@id',[$DistributionController,'delete']);
 	$router->post('/distributions/create',[$DistributionController,'create']);
+
+	// Achats
+	$router->get('/achats',[$AchatController,'liste']);
+	$router->post('/achats/simuler',[$AchatController,'simuler']);
+	$router->post('/achats/valider',[$AchatController,'valider']);
+	$router->get('/achats/delete/@id',[$AchatController,'delete']);
 
 
 	// $router->get('/benefice',[$controller,'benefice']);

@@ -67,15 +67,15 @@ return [
 	 **************************************/
 	'database' => [
 		// MySQL Example:
-		// 'host'     => '127.0.0.1',      // Database host (e.g., 'localhost', 'db.example.com')
-		// 'dbname'   => 'BNGRC',   // Database name (e.g., 'flightphp')
-		// 'user'     => 'root',  // Database user (e.g., 'root')
-		// 'password' => '',  // Database password (never commit real passwords)
+		'host'     => '127.0.0.1',      // Database host (e.g., 'localhost', 'db.example.com')
+		'dbname'   => 'BNGRC',   // Database name (e.g., 'flightphp')
+		'user'     => 'root',  // Database user (e.g., 'root')
+		'password' => '',  // Database password (never commit real passwords)
 
-		'host'     => '172.16.7.131',      // Database host (e.g., 'localhost', 'db.example.com')
-		'dbname'   => 'db_s2_ETU004085',   // Database name (e.g., 'flightphp')
-		'user'     => 'ETU004085',  // Database user (e.g., 'root')
-		'password' => '7gJpGgZN',  // Database password (never commit real passwords)
+		// 'host'     => '172.16.7.131',      // Database host (e.g., 'localhost', 'db.example.com')
+		// 'dbname'   => 'db_s2_ETU004085',   // Database name (e.g., 'flightphp')
+		// 'user'     => 'ETU004085',  // Database user (e.g., 'root')
+		// 'password' => '7gJpGgZN',  // Database password (never commit real passwords)
 
 
 		// SQLite Example:

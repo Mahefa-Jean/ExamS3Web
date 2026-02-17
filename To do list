@@ -35,6 +35,13 @@
 
         Besoin , Don , Distribution
 
-3 - Filtre des 
+v2 - 
 
-        
+1 - Achat des besoins en nature et en materiaux :
+
+        Base : besoin : ajouter une categorie 
+               achatBesoin : idBesoin , quantite  
+        Model :
+        Fonction :
+        Controlleur :
+        View :

@@ -60,6 +60,14 @@
                         <label for="prix_unitaire">Prix unitaire</label>
                         <input type="number" id="prix_unitaire" name="prix_unitaire" value="<?= htmlspecialchars($besoin['prix_unitaire']) ?>" required min="0" step="0.01">
                     </div>
+                    <div class="form-group">
+                        <label for="id_categorie">Catégorie</label>
+                        <select id="id_categorie" name="id_categorie" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem;">
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= $cat['id'] ?>" <?= ($cat['id'] == $besoin['id_categorie']) ? 'selected' : '' ?>><?= htmlspecialchars(ucfirst($cat['nom'])) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                         <a href="<?= BASE_URL ?>/besoins" class="btn btn-secondary">Annuler</a>

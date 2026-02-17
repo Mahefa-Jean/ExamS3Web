@@ -56,4 +56,10 @@ class DonController {
 
         $this->liste();
     }
+
+    public function restants() {
+        $DonModel = new Don(Flight::db());
+        $donsRestants = $DonModel->getDonsRestants();
+        $this->app->render('donsRestant', ['donsRestants' => $donsRestants]);
+    }
 }

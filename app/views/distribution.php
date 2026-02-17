@@ -30,7 +30,19 @@
         .btn-primary { background-color: #3498db; color: white; }
         .btn-primary:hover { background-color: #2980b9; }
         .site-footer { background-color: #1a252f; color: #ecf0f1; text-align: center; padding: 1rem 2rem; }
-        select { padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; }
+        select, input { padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; }
+        .alert { padding: 1rem 1.5rem; border-radius: 6px; margin-bottom: 1.5rem; font-weight: 500; }
+        .alert-danger { background-color: #fce4e4; color: #c0392b; border: 1px solid #e74c3c; }
+        .alert-success { background-color: #d5f5e3; color: #1e8449; border: 1px solid #27ae60; }
+        .simulation-box { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border: 2px solid #3498db; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .simulation-box h3 { color: #2c3e50; margin-bottom: 1rem; }
+        .simulation-detail { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #bdc3c7; }
+        .simulation-detail:last-child { border-bottom: none; }
+        .simulation-detail.total { font-weight: 700; font-size: 1.1rem; color: #2c3e50; border-top: 2px solid #34495e; margin-top: 0.5rem; padding-top: 0.75rem; }
+        .btn-success { background-color: #27ae60; color: white; }
+        .btn-success:hover { background-color: #219a52; }
+        .btn-warning { background-color: #e67e22; color: white; }
+        .btn-warning:hover { background-color: #d35400; }
         @media (max-width: 768px) {
             .site-wrapper { flex-direction: column; }
             .site-menu { width: 100%; min-width: 100%; min-height: auto; padding: 0.5rem 0; }
@@ -51,29 +63,83 @@
         <div class="main-content">
         <div class="container">
 
-        <!-- Formulaire d'ajout -->
+        <!-- Message d'erreur -->
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger">⚠️ <?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
+        <!-- Résultat de simulation -->
+        <?php if (!empty($simulation)): ?>
+            <div class="simulation-box">
+                <h3>📋 Résultat de la Simulation de Distribution</h3>
+                <div class="simulation-detail">
+                    <span>Ville :</span>
+                    <span><strong><?= htmlspecialchars($simulation['ville']['nom']) ?></strong> (<?= $simulation['ville']['nombre_sinistre'] ?> sinistrés)</span>
+                </div>
+                <div class="simulation-detail">
+                    <span>Besoin :</span>
+                    <span><?= htmlspecialchars($simulation['besoin']['nom']) ?></span>
+                </div>
+                <div class="simulation-detail">
+                    <span>Quantité à distribuer :</span>
+                    <span><?= $simulation['quantite'] ?></span>
+                </div>
+                <div class="simulation-detail">
+                    <span>Prix unitaire :</span>
+                    <span><?= number_format($simulation['prix_unitaire'], 2) ?> Ar</span>
+                </div>
+                <div class="simulation-detail total">
+                    <span>Montant total :</span>
+                    <span><?= number_format($simulation['montant_total'], 2) ?> Ar</span>
+                </div>
+                <div class="simulation-detail">
+                    <span>Stock disponible avant :</span>
+                    <span style="font-weight: 600;"><?= $simulation['stock_disponible'] ?></span>
+                </div>
+                <div class="simulation-detail">
+                    <span>Stock après distribution :</span>
+                    <span style="color: <?= $simulation['stock_apres'] > 0 ? '#27ae60' : '#e67e22' ?>; font-weight: 600;">
+                        <?= $simulation['stock_apres'] ?>
+                    </span>
+                </div>
+
+                <div class="alert alert-success" style="margin-top: 1rem;">✅ Distribution possible !</div>
+                <form method="POST" action="<?= BASE_URL ?>/distributions/valider" style="margin-top: 1rem;">
+                    <input type="hidden" name="id_ville" value="<?= $form_data['id_ville'] ?>">
+                    <input type="hidden" name="id_besoin" value="<?= $form_data['id_besoin'] ?>">
+                    <input type="hidden" name="quantite" value="<?= $form_data['quantite'] ?>">
+                    <button type="submit" class="btn btn-success" style="width: 100%; padding: 0.8rem; font-size: 1rem;">✅ Valider la distribution</button>
+                </form>
+            </div>
+        <?php endif; ?>
+
+        <!-- Formulaire de simulation -->
         <div class="header">
-            <h2>Ajouter une distribution</h2>
-            <form method="POST" action="<?= BASE_URL ?>/distributions/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
-                <select name="id_ville" required style="flex: 1;">
+            <h2>Simuler une distribution</h2>
+            <form method="POST" action="<?= BASE_URL ?>/distributions/simuler" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
+                <select name="id_ville" required style="flex: 1; min-width: 150px;">
                     <option value="">-- Choisir une ville --</option>
                     <?php if (!empty($villes)): ?>
                         <?php foreach ($villes as $ville): ?>
-                            <option value="<?= $ville['id'] ?>"><?= htmlspecialchars($ville['nom']) ?></option>
+                            <option value="<?= $ville['id'] ?>" <?= (isset($form_data) && $form_data['id_ville'] == $ville['id']) ? 'selected' : '' ?>><?= htmlspecialchars($ville['nom']) ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
-                <select name="id_besoin" required style="flex: 1;">
-                    <option value="">-- Choisir un besoin --</option>
+                <select name="id_besoin" id="id_besoin" required style="flex: 1; min-width: 150px;">
+                    <option value="" data-stock="0">-- Choisir un besoin --</option>
                     <?php if (!empty($besoins)): ?>
                         <?php foreach ($besoins as $besoin): ?>
-                            <option value="<?= $besoin['id'] ?>"><?= htmlspecialchars($besoin['nom']) ?></option>
+                            <?php $qte_restante = $quantites_restantes[$besoin['id']] ?? 0; ?>
+                            <option value="<?= $besoin['id'] ?>" data-stock="<?= $qte_restante ?>" <?= (isset($form_data) && $form_data['id_besoin'] == $besoin['id']) ? 'selected' : '' ?>><?= htmlspecialchars($besoin['nom']) ?> (stock: <?= $qte_restante ?>)</option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
-                <input type="number" name="quantite" placeholder="Quantité" required min="1" style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
-                <button type="submit" class="btn btn-primary">Distribuer</button>
+                <input type="number" name="quantite" id="quantite" placeholder="Quantité" required min="1" 
+                       value="<?= isset($form_data) ? $form_data['quantite'] : '' ?>"
+                       style="flex: 0.5; min-width: 100px; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                <button type="submit" class="btn btn-warning">🔍 Simuler</button>
             </form>
+            <p id="stockInfo" style="margin-top: 0.75rem; font-size: 0.9rem; color: #7f8c8d; display: none;"></p>
         </div>
 
         <!-- Tableau des distributions -->
@@ -123,6 +189,48 @@
     </div>
 
     <?php include __DIR__ . '/footer.php'; ?>
-    <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
+    <script nonce="<?= Flight::app()->get('csp_nonce') ?>" src="<?= BASE_URL ?>/assets/js/script.js"></script>
+    <script nonce="<?= Flight::app()->get('csp_nonce') ?>">
+        const besoinSelect = document.getElementById('id_besoin');
+        const quantiteInput = document.getElementById('quantite');
+        const stockInfo = document.getElementById('stockInfo');
+
+        besoinSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const stock = parseInt(selectedOption.getAttribute('data-stock')) || 0;
+
+            if (this.value) {
+                if (stock > 0) {
+                    stockInfo.innerHTML = '📦 <strong>Stock disponible :</strong> ' + stock + ' unité(s)';
+                    stockInfo.style.color = '#27ae60';
+                    quantiteInput.max = stock;
+                } else {
+                    stockInfo.innerHTML = '⚠️ <strong>Aucun don restant</strong> pour ce besoin. Distribution impossible.';
+                    stockInfo.style.color = '#e74c3c';
+                    quantiteInput.max = 0;
+                }
+                stockInfo.style.display = 'block';
+            } else {
+                stockInfo.style.display = 'none';
+                quantiteInput.removeAttribute('max');
+            }
+        });
+
+        quantiteInput.addEventListener('input', function() {
+            const selectedOption = besoinSelect.options[besoinSelect.selectedIndex];
+            const stock = parseInt(selectedOption.getAttribute('data-stock')) || 0;
+
+            if (besoinSelect.value && parseInt(this.value) > stock) {
+                this.style.borderColor = '#e74c3c';
+                stockInfo.innerHTML = '❌ Quantité demandée (' + this.value + ') dépasse le stock disponible (' + stock + ')';
+                stockInfo.style.color = '#e74c3c';
+                stockInfo.style.display = 'block';
+            } else if (besoinSelect.value && stock > 0) {
+                this.style.borderColor = '#27ae60';
+                stockInfo.innerHTML = '📦 <strong>Stock disponible :</strong> ' + stock + ' unité(s)';
+                stockInfo.style.color = '#27ae60';
+            }
+        });
+    </script>
 </body>
 </html>

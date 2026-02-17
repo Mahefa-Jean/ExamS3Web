@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group">
                         <label for="quantite">Quantité</label>
-                        <input type="number" id="quantite" name="quantite" value="<?= htmlspecialchars($don['quantite']) ?>" required min="1">
+                        <input type="number" id="quantite" name="quantite" value="<?= htmlspecialchars($don['quantite']) ?>" required min="0">
                     </div>
                     <div class="btn-group">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>

@@ -7,10 +7,29 @@ CREATE TABLE ville(
     nombre_sinistre INT NOT NULL
 );
 
+CREATE TABLE categorie(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO categorie (nom) VALUES ('nature'), ('materiaux'), ('argent');
+
 CREATE TABLE besoin(
     id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL,
-    prix_unitaire DECIMAL(10, 2) NOT NULL
+    prix_unitaire DECIMAL(10, 2) NOT NULL,
+    id_categorie INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_categorie) REFERENCES categorie(id)
+);
+
+CREATE TABLE achat(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_besoin INT NOT NULL,
+    quantite INT NOT NULL,
+    frais_pourcent DECIMAL(5, 2) NOT NULL DEFAULT 10.00,
+    montant_total DECIMAL(10, 2) NOT NULL,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_besoin) REFERENCES besoin(id)
 );
 
 CREATE TABLE don(

@@ -246,27 +246,76 @@
         <div class="container">
 
         <!-- Tableau des villes -->
-        <h2>Liste des villes</h2>
+        <h2>Tableau de bord — Villes, Besoins et Dons</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Nom de la ville</th>
-                    <th>Besoin</th>
-                    <th>Don</th>
+                    <th>Ville</th>
+                    <th>Sinistrés</th>
+                    <th>Besoins (montant)</th>
+                    <th>Dons distribués (montant)</th>
+                    <th>Reste à couvrir</th>
+                    <th>Statut</th>
+                    <th>Détails</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (!empty($villes)): ?>
                     <?php foreach ($villes as $ville): ?>
+                        <?php $reste = $ville['besoin'] - $ville['don']; ?>
+                        <?php $taux = $ville['besoin'] > 0 ? ($ville['don'] / $ville['besoin'] * 100) : 0; ?>
                         <tr>
-                            <td><?= htmlspecialchars($ville['nom']) ?></td>
-                            <td><?= htmlspecialchars($ville['besoin']) ?></td>
-                            <td><?= htmlspecialchars($ville['don']) ?></td>
+                            <td><strong><?= htmlspecialchars($ville['nom']) ?></strong></td>
+                            <td><?= htmlspecialchars($ville['nombre_sinistre']) ?></td>
+                            <td><?= number_format($ville['besoin'], 2) ?> Ar</td>
+                            <td><?= number_format($ville['don'], 2) ?> Ar</td>
+                            <td style="color: <?= $reste <= 0 ? '#27ae60' : '#e74c3c' ?>; font-weight: 600;">
+                                <?= number_format(max($reste, 0), 2) ?> Ar
+                            </td>
+                            <td>
+                                <?php if ($taux >= 100): ?>
+                                    <span style="background-color: #d5f5e3; color: #1e8449; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✅ Couverte</span>
+                                <?php elseif ($taux >= 50): ?>
+                                    <span style="background-color: #fef9e7; color: #b7950b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">⚠️ Partielle (<?= number_format($taux, 0) ?>%)</span>
+                                <?php else: ?>
+                                    <span style="background-color: #fce4e4; color: #c0392b; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">❌ Non couverte (<?= number_format($taux, 0) ?>%)</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL ?>/villes/besoins/<?= $ville['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Voir besoins</a>
+                            </td>
                         </tr>
+                        <!-- Détail des besoins de cette ville -->
+                        <?php if (!empty($ville['besoins_detail'])): ?>
+                            <tr>
+                                <td colspan="7" style="padding: 0.5rem 2rem; background-color: #f8f9fa;">
+                                    <table style="width: 100%; box-shadow: none; margin: 0;">
+                                        <thead style="background-color: #7f8c8d;">
+                                            <tr>
+                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Besoin</th>
+                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Qté/sinistré</th>
+                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Prix unitaire</th>
+                                                <th style="padding: 0.5rem; font-size: 0.85rem;">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($ville['besoins_detail'] as $bd): ?>
+                                                <tr style="background-color: #f8f9fa;">
+                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= htmlspecialchars($bd['besoin']) ?></td>
+                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= $bd['quantite_par_sinistre'] ?></td>
+                                                    <td style="padding: 0.4rem; font-size: 0.85rem;"><?= number_format($bd['prix_unitaire'], 2) ?> Ar</td>
+                                                    <td style="padding: 0.4rem; font-size: 0.85rem; font-weight: 600;"><?= number_format($bd['total_prix_besoin'], 2) ?> Ar</td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
+                        <td colspan="7" style="text-align: center; color: #7f8c8d;">Aucune ville enregistrée</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

@@ -53,9 +53,17 @@
         <!-- Formulaire d'ajout -->
         <div class="header">
             <h2>Ajouter un nouveau besoin</h2>
-            <form method="POST" action="<?= BASE_URL ?>/besoins/create" style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <form method="POST" action="<?= BASE_URL ?>/besoins/create" style="display: flex; gap: 1rem; margin-top: 1rem; align-items: center;">
                 <input type="text" name="nom" placeholder="Nom du besoin" required style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
                 <input type="number" name="prix_unitaire" placeholder="Prix unitaire" required min="0" step="0.01" style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                <select name="id_categorie" required style="flex: 0.5; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="">-- Catégorie --</option>
+                    <?php if (!empty($categories)): ?>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>"><?= htmlspecialchars(ucfirst($cat['nom'])) ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
                 <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
         </div>
@@ -69,6 +77,7 @@
                         <th>Id</th>
                         <th>Nom</th>
                         <th>Prix unitaire</th>
+                        <th>Catégorie</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -79,6 +88,7 @@
                                 <td><?= htmlspecialchars($besoin['id']) ?></td>
                                 <td><?= htmlspecialchars($besoin['nom']) ?></td>
                                 <td><?= number_format($besoin['prix_unitaire'], 2) ?> Ar</td>
+                                <td><span style="padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; background-color: <?= $besoin['categorie'] === 'argent' ? '#27ae60' : ($besoin['categorie'] === 'materiaux' ? '#e67e22' : '#3498db') ?>; color: white;"><?= htmlspecialchars(ucfirst($besoin['categorie'])) ?></span></td>
                                 <td>
                                     <div class="action-buttons">
                                         <a href="<?= BASE_URL ?>/besoins/edit/<?= $besoin['id'] ?>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">Modifier</a>
@@ -89,7 +99,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="4" style="text-align: center; color: #7f8c8d;">Aucun besoin enregistré</td>
+                            <td colspan="5" style="text-align: center; color: #7f8c8d;">Aucun besoin enregistré</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

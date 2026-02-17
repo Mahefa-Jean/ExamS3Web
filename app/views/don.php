@@ -70,12 +70,16 @@
 
         <!-- Tableau des dons -->
         <div class="header">
-            <h2>Liste des dons</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <h2 style="flex: 1;">Liste des dons</h2>
+                <a href="<?= BASE_URL ?>/dons/restants" class="btn btn-success" style="margin-top: 1rem; padding: 0.7rem 1.5rem; font-size: 0.95rem;">📦 Dons Restants</a>
+            </div>
             <table>
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Besoin</th>
+                        <th>Catégorie</th>
                         <th>Quantité</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -87,6 +91,7 @@
                             <tr>
                                 <td><?= htmlspecialchars($don['id']) ?></td>
                                 <td><?= htmlspecialchars($don['besoin']) ?></td>
+                                <td><span style="padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; background-color: <?= $don['categorie'] === 'argent' ? '#27ae60' : ($don['categorie'] === 'materiaux' ? '#e67e22' : '#3498db') ?>; color: white;"><?= htmlspecialchars(ucfirst($don['categorie'])) ?></span></td>
                                 <td><?= htmlspecialchars($don['quantite']) ?></td>
                                 <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($don['date']))) ?></td>
                                 <td>
@@ -99,7 +104,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" style="text-align: center; color: #7f8c8d;">Aucun don enregistré</td>
+                            <td colspan="6" style="text-align: center; color: #7f8c8d;">Aucun don enregistré</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
